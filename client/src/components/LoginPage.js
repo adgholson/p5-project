@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import './SignUp.css';
+import './LoginPage.css';
 import { Form, Button } from "react-bootstrap";
 
-const SignUp = () => {
+const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     username: "",
@@ -21,15 +21,15 @@ const SignUp = () => {
   };
 
   return (
-    <div className="signup-page">
+    <div className="login-page">
       <div className="form-container">
-        <h1 className="signup-form-title">signup</h1>
+        <h1 className="login-form-title">Login</h1>
         <Form onSubmit={handleFormSubmit}>
           <Form.Group controlId="formEmail" className="form-group">
             <Form.Label>Email</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter an Email"
+              placeholder="Enter your Email"
               name="email"
               value={formData.email}
               onChange={handleInputChange}
@@ -41,7 +41,7 @@ const SignUp = () => {
             <Form.Label>Username</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter a Username"
+              placeholder="Enter your Username"
               name="username"
               value={formData.username}
               onChange={handleInputChange}
@@ -53,7 +53,7 @@ const SignUp = () => {
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Enter a Password"
+              placeholder="Enter your Password"
               name="password"
               value={formData.password}
               onChange={handleInputChange}
@@ -62,14 +62,14 @@ const SignUp = () => {
           </Form.Group>
 
           <Button variant="primary" type="submit" className="submit-button">
-            signup
+            Login
           </Button>
         </Form>
-        <h2 className="signup-form-account-text">Have an account?</h2>
-        <h2 className="signup-form-login-text">Login!</h2>
+        <h2 className="login-form-account-text">Don't have an account?</h2>
+        <h2 className="login-form-signup-text">Sign Up!</h2>
       </div>
     </div>
   );
 };
 
-export default SignUp;
+export default LoginPage;

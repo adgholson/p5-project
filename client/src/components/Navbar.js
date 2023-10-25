@@ -19,7 +19,7 @@ const Navbar = () => {
                         <h3 className="navlink">Games</h3>
                     </li>
                 </ul>
-                <Button className="login-button">Sign Up</Button>
+                <Button className="login-button">Login</Button>
             </div>
         </nav>
     );
