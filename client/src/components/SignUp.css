@@ -1,0 +1,72 @@
+.signup-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .form-container {
+    width: 80%; 
+    max-width: 400px;
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px black;
+    background-color: Black;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-label {
+    font-weight: bold;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid white;
+    border-radius: 4px;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 10px;
+    font-family: 'Bangers', sans-serif;
+    font-size: 20px;
+    background-color: #D46531;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-button:hover {
+    background-color: white;
+    color: black;
+  }
+
+  .signup-form-title{
+    font-family: 'Bangers', sans-serif;
+    font-size: 60px;
+  }
+
+  .signup-form-login-text{
+    padding-top: 10px;
+    cursor: pointer;
+    font-family: 'Bangers', sans-serif;
+    text-align: center;
+    font-size: 40px;
+  }
+  .signup-form-login-text:hover{
+    color: #D46531;
+  }
+  .signup-form-account-text{
+    padding-top: 20px;
+    
+  }
