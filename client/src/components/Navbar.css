@@ -17,6 +17,7 @@ body, html {
     align-items: center;
     padding: 0 20px;
     z-index: 1000;
+    border-bottom: solid 5px #D46531;
 }
 
 .navbar-logo {
@@ -49,7 +50,7 @@ body, html {
     padding: 10px 20px;
     cursor: pointer;
     font-family: 'Bangers', sans-serif;
-    font-size: 25px;
+    font-size: 30px;
     transition: all 0.3s ease;
 }
 
@@ -61,6 +62,7 @@ body, html {
     display: flex;
     list-style-type: none;
     margin-top: 20px;
+    margin-right: 20px;
 }
 
 .navlink{

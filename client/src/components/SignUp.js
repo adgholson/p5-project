@@ -1,13 +1,11 @@
 import React from "react";
 import Navbar from "./Navbar";
-import Footer from "./Footer";
 
-function App() {
+function SignUp() {
   return (
   <>
   <Navbar/>
-  <Footer/>
   </>
 )}
 
-export default App;
+export default SignUp;
