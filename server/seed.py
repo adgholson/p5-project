@@ -22,10 +22,10 @@ if __name__ == '__main__':
         db.session.query(Review).delete()
         db.session.query(FavoriteGame).delete()
 
-        print("Creating Users...")
-        user1 = User(username="Morgan1", email="morgan1@email.com", password="Password1!")
-        user2 = User(username="Morgan2", email="morgan2@email.com", password="Password1!")
-        user3 = User(username="Morgan3", email="morgan3@email.com", password="Password1!")
+        print("Seeding Users...")
+        user1 = User(username="User1", email="user1@email.com", password="Password1!")
+        user2 = User(username="User2", email="user2@email.com", password="Password1!")
+        user3 = User(username="User3", email="user3@email.com", password="Password1!")
         users = [user1, user2, user3]
         db.session.add_all(users)
         db.session.commit()
