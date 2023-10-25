@@ -22,6 +22,10 @@ def index():
 games = []
 users = []
 
+class Users(Resource):
+    def get(self):
+        return make_response({"users": users}, 200)
+
 class Games(Resource):
     def get(self):
         return make_response({"games": games}, 200)
@@ -89,11 +93,12 @@ class RemoveFavoriteGame(Resource):
         else:
             return make_response({"error": "User not found"}, 404)
 
-api.add_resource(Games, "/api/games")
-api.add_resource(GameById, "/api/games/<int:id>")
-api.add_resource(UserFavorites, "/api/users/<int:user_id>/favorites")
-api.add_resource(AddFavoriteGame, "/api/users/<int:user_id>/favorites/<int:game_id>")
-api.add_resource(RemoveFavoriteGame, "/api/users/<int:user_id>/favorites/<int:game_id>")
+api.add_resource(Users, "/users")
+api.add_resource(Games, "/games")
+api.add_resource(GameById, "/games/<int:id>")
+api.add_resource(UserFavorites, "/users/<int:user_id>/favorites")
+api.add_resource(AddFavoriteGame, "/users/<int:user_id>/favorites/<int:game_id>")
+api.add_resource(RemoveFavoriteGame, "/users/<int:user_id>/favorites/<int:game_id>")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
