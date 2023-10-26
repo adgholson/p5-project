@@ -3,8 +3,9 @@
 # Standard library imports
 
 # Remote library imports
-from flask import Flask, make_response, request
+from flask import session, make_response, request
 from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
 
 # Local imports
 from config import app, db, api, CORS
@@ -14,9 +15,15 @@ from models import *
 # Views go here!
 CORS(app)
 
-@app.route('/')
-def index():
-    return '<h1>Project Server</h1>'
+@app.before_request
+def check_if_logged_in():
+    open_access_list = [
+        'signup',
+        'login',
+        'check_session'
+    ]
+    if (request.endpoint) not in open_access_list and (not session.get('user_id')):
+        return {'error': '401 Unauthorized'}, 401
 
 
 games = []
@@ -93,12 +100,34 @@ class RemoveFavoriteGame(Resource):
         else:
             return make_response({"error": "User not found"}, 404)
 
+class Signup(Resource):
+    def post(self):
+        request_json = request.get_json()
+        email = request_json.get('email')
+        username = request_json.get('username')
+        password = request_json.get('password')
+        
+        user = User(
+            email=email,
+            username=username,
+        )
+        user.set_password(password)
+        try:
+            db.session.add(user)
+            db.session.commit()
+            session['user_id'] = user.id
+            return user.to_dict(), 201
+        except IntegrityError:
+            db.session.rollback()
+            return {'error': '422 Unprocessable Entity'}, 422
+
 api.add_resource(Users, "/users")
 api.add_resource(Games, "/games")
 api.add_resource(GameById, "/games/<int:id>")
 api.add_resource(UserFavorites, "/users/<int:user_id>/favorites")
 api.add_resource(AddFavoriteGame, "/users/<int:user_id>/favorites/<int:game_id>")
 api.add_resource(RemoveFavoriteGame, "/users/<int:user_id>/favorites/<int:game_id>")
+api.add_resource(Signup, '/signup', endpoint='signup')
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

@@ -1,23 +1,28 @@
 import React, { useState } from "react";
-import './LoginPage.css';
+import './SignUpPage.css';
 import { Form, Button, Modal } from "react-bootstrap";
 
-function LoginPage({ onLogin }) {
+function SignUpPage({ onLogin }) {
     const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [errors, setErrors] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
+    setErrors([]);
     setIsLoading(true);
-    fetch("/login", {
+    fetch("/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({
+        email,
+        username,
+        password,
+      }),
     }).then((r) => {
       setIsLoading(false);
       if (r.ok) {
@@ -29,19 +34,18 @@ function LoginPage({ onLogin }) {
   }
 
   return (
-    <div className="login-page">
+    <div className="signup-page">
       <div className="form-container">
-        <h1 className="login-form-title">Login</h1>
+        <h1 className="signup-form-title">Sign Up</h1>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formEmail" className="form-group">
             <Form.Label>Email</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter your Email"
+              placeholder="Enter an Email"
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
           </Form.Group>
 
@@ -49,7 +53,7 @@ function LoginPage({ onLogin }) {
             <Form.Label>Username</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter your Username"
+              placeholder="Enter a Username"
               name="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -60,7 +64,7 @@ function LoginPage({ onLogin }) {
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Enter your Password"
+              placeholder="Enter a Password"
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -68,7 +72,7 @@ function LoginPage({ onLogin }) {
           </Form.Group>
 
           <Button variant="primary" type="submit" className="submit-button">
-          {isLoading ? "Loading..." : "Login"}
+          {isLoading ? "Loading..." : "SignUp"}
           </Button>
           <Form.Group>
             {errors.map((err) => (
@@ -76,11 +80,11 @@ function LoginPage({ onLogin }) {
             ))}
         </Form.Group>
         </Form>
-        <h2 className="login-form-account-text">Don't have an account?</h2>
-        <h2 className="login-form-signup-text">Sign Up!</h2>
+        <h2 className="signup-form-account-text">Have an account?</h2>
+        <h2 className="signup-form-login-text">Login!</h2>
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default SignUpPage;
