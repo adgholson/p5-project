@@ -1,11 +1,10 @@
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
-from werkzeug.security import generate_password_hash
 from datetime import datetime
 import re
-
-from config import db
+from config import db, bcrypt
 
 # Models go here!
 class User(db.Model, SerializerMixin):
@@ -14,7 +13,13 @@ class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False, unique=True)
-    password = db.Column(db.String, nullable=False)
+    _password_hash = db.Column(db.String(128), nullable=False)
+
+    def set_password(self, password):
+        self._password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self._password_hash, password)
 
     # Relationships
     reviews = db.relationship('Review', backref='user_reviews', lazy=True)
@@ -23,29 +28,25 @@ class User(db.Model, SerializerMixin):
     reviews_proxy = association_proxy('user_reviews', 'game')
 
     # Serialization Rules
-    serialize_rules = ('-password', '-reviews.user', '-favorite_games.user',)
+    serialize_rules = ('-reviews.user', '-favorite_games.user', '-_password_hash',)
 
     # Validations
-    @validates('username')
-    def validate_username(self, key, username):
-        if not username or len(username) < 5 or len(username) > 15 or not any(char.isdigit() for char in username):
-            raise ValueError("Username is required and must be between 5 and 15 characters and contain at least one number.")
-        return username
-
     @validates('email')
     def validate_email(self, key, email):
         if not email or not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             raise ValueError("Email is required and must fit example@email.com format.")
         return email
 
-    @validates('password')
-    def validate_password(self, key, password):
-        if not password or len(password) < 6 or not any(char.isupper() for char in password) or not any(char.islower() for char in password) or not any(char.isdigit() for char in password) or not any(char in "!@#$%^&*()_+{}[]|\\:;<>,.?/~" for char in password):
+    @validates('_password_hash')
+    def validate__password_hash(self, key, _password_hash):
+        if not _password_hash or len(_password_hash) < 4 or not any(char.isupper() for char in _password_hash) or not any(char.islower() for char in _password_hash) or not any(char.isdigit() for char in _password_hash) or not any(char in "!@#$%^&*()_+{}[]|\\:;<>,.?/~" for char in _password_hash):
             raise ValueError("Password is required and must contain at least one uppercase letter, one lowercase letter, one number, and one special character.")
-        return generate_password_hash(password)
+        if not _password_hash.startswith('$2b$'):
+            return bcrypt.generate_password_hash(_password_hash).decode('utf-8')
+        return _password_hash
         
     def __repr__(self):
-        return f'<User {self.id}, {self.username}, {self.email}, {self.password}>'
+        return f'<User {self.id}, {self.username}, {self.email}>'
 
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'reviews'

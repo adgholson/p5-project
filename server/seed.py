@@ -2,12 +2,14 @@
 
 # Standard library imports
 from random import randint, choice as rc
+from flask_bcrypt import Bcrypt
 
 # Remote library imports
 
 # Local imports
 from app import app
 from app import db, User, Game, Review, FavoriteGame
+bcrypt = Bcrypt(app)
 
 
 
@@ -23,10 +25,16 @@ if __name__ == '__main__':
         db.session.query(FavoriteGame).delete()
 
         print("Seeding Users...")
-        user1 = User(username="User1", email="user1@email.com", password="Password1!")
-        user2 = User(username="User2", email="user2@email.com", password="Password1!")
-        user3 = User(username="User3", email="user3@email.com", password="Password1!")
-        users = [user1, user2, user3]
+        users_data = [
+        {"username": "User1", "email": "user1@email.com", "password": "Entrycode1!"},
+        {"username": "User2", "email": "user2@email.com", "password": "Entrycode1!"},
+        {"username": "User3", "email": "user3@email.com", "password": "Entrycode1!"}
+        ]
+        users = []
+        for user_data in users_data:
+            user = User(username=user_data["username"], email=user_data["email"])
+            user._password_hash = bcrypt.generate_password_hash(user_data["password"]).decode('utf-8')
+            users.append(user)
         db.session.add_all(users)
         db.session.commit()
 

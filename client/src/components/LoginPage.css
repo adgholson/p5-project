@@ -3,9 +3,9 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-  }
-  
-  .form-container {
+}
+
+.form-container {
     width: 80%; 
     max-width: 400px;
     padding: 20px;
@@ -15,25 +15,25 @@
     background-color: Black;
     color: white;
     font-family: 'Quicksand', sans-serif;
-  }
-  
-  .form-group {
+}
+
+.form-group {
     margin-bottom: 15px;
-  }
-  
-  .form-label {
+}
+
+.form-label {
     font-weight: bold;
-  }
-  
-  .form-control {
+}
+
+.form-control {
     width: 100%;
     padding: 8px;
     font-size: 16px;
     border: 1px solid white;
     border-radius: 4px;
-  }
-  
-  .submit-button {
+}
+
+.submit-button {
     width: 100%;
     padding: 10px;
     font-family: 'Bangers', sans-serif;
@@ -44,29 +44,36 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
-  
-  .submit-button:hover {
+}
+
+.submit-button:hover {
     background-color: white;
     color: black;
-  }
+}
 
-  .login-form-title{
+.login-form-title{
     font-family: 'Bangers', sans-serif;
     font-size: 60px;
-  }
+}
 
-  .login-form-signup-text{
+.login-form-signup-text{
     padding-top: 10px;
     cursor: pointer;
     font-family: 'Bangers', sans-serif;
     text-align: center;
     font-size: 40px;
-  }
-  .login-form-signup-text:hover{
+}
+
+.login-form-signup-text:hover{
     color: #D46531;
-  }
-  .login-form-account-text{
+}
+
+.login-form-account-text{
     padding-top: 20px;
-    
-  }
+    text-align: center;
+}
+
+.form-control:focus {
+    border-color: #D46531;
+    box-shadow: #D46531;
+}
