@@ -16,6 +16,9 @@ const Navbar = ({ isLoggedIn }) => {
                     <li>
                         <Link to="/" className="navlink">Home</Link>
                     </li>
+                    <li>
+                        <Link to="/search" className="navlink">Search</Link>
+                    </li>
                 </ul>
                 {isLoggedIn ? (
                     <Link to="/dashboard">

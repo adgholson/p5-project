@@ -1,0 +1,19 @@
+.search-page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; 
+}
+
+.search-container{
+    width: 80%; 
+    max-width: 400px;
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px black;
+    background-color: Black;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+}
