@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import VideoBackground from "./VideoBackground";
 import './LoginPage.css';
 import { Form, Button, Modal } from "react-bootstrap";
 
 function LoginPage({ onLogin }) {
-    const [email, setEmail] = useState("");
+  const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
@@ -21,7 +23,12 @@ function LoginPage({ onLogin }) {
     }).then((r) => {
       setIsLoading(false);
       if (r.ok) {
-        r.json().then((user) => onLogin(user));
+        r.json().then((user) => {
+          console.log(user);
+          const { username, email } = user;
+          onLogin({ username, email });
+          history.push("/dashboard");
+        });
       } else {
         r.json().then((err) => setErrors(err.errors));
       }
@@ -30,20 +37,10 @@ function LoginPage({ onLogin }) {
 
   return (
     <div className="login-page">
+      <VideoBackground/>
       <div className="form-container">
         <h1 className="login-form-title">Login</h1>
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formEmail" className="form-group">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter your Email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </Form.Group>
 
           <Form.Group controlId="formUsername" className="form-group">
             <Form.Label>Username</Form.Label>
@@ -77,7 +74,9 @@ function LoginPage({ onLogin }) {
         </Form.Group>
         </Form>
         <h2 className="login-form-account-text">Don't have an account?</h2>
-        <h2 className="login-form-signup-text">Sign Up!</h2>
+        <h2 className="login-form-signup-text" onClick={() => history.push('/signup')}>
+          Sign Up!
+        </h2>
       </div>
     </div>
   );

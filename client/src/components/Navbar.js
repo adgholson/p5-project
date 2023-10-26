@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './Navbar.css';
 import { Button } from "react-bootstrap";
 
-const Navbar = () => {
+const Navbar = ({ isLoggedIn }) => {
     return (
         <nav className="navbar">
             <div className="navbar-left">
@@ -13,13 +14,18 @@ const Navbar = () => {
             <div className="navbar-right">
                 <ul className="navbar-links">
                     <li>
-                        <h3 className="navlink">Home</h3>
-                    </li>
-                    <li>
-                        <h3 className="navlink">Games</h3>
+                        <Link to="/" className="navlink">Home</Link>
                     </li>
                 </ul>
-                <Button className="login-button">Login</Button>
+                {isLoggedIn ? (
+                    <Link to="/dashboard">
+                        <Button className="login-button">Account</Button>
+                    </Link>
+                ) : (
+                    <Link to="/login">
+                        <Button className="login-button">Login</Button>
+                    </Link>
+                )}
             </div>
         </nav>
     );

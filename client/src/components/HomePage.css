@@ -1,0 +1,54 @@
+.home-center-div {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; 
+}
+
+
+.black-overlay {
+    width: 100%; 
+    height: 100%;
+    position: absolute;
+    max-width: 800px;
+    max-height: 500px;
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px black;
+    background-color: Black;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+    text-align: center;
+}
+
+.home-title{
+    font-family: 'Bangers', sans-serif;
+    font-size: 70px;
+    padding-top: 15px;
+}
+
+.home-signup-button{
+    background-color: #D46531;
+    margin-right: 40px;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: 'Bangers', sans-serif;
+    font-size: 30px;
+    transition: all 0.3s ease;
+    margin: 50px;
+}
+
+.home-signup-button:hover{
+    background-color: white;
+    color: black; 
+}
+
+.home-header{
+    font-family: 'Quicksand', sans-serif;
+    font-size: 20px;
+    padding-top: 50px;
+}

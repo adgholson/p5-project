@@ -20,6 +20,20 @@ class User(db.Model, SerializerMixin):
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self._password_hash, password)
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+        }
+    
+    @classmethod
+    def find_by_username(cls, username):
+        return cls.query.filter_by(username=username).first()
+
+    def verify_password(self, password):
+        return bcrypt.check_password_hash(self._password_hash, password)
 
     # Relationships
     reviews = db.relationship('Review', backref='user_reviews', lazy=True)
