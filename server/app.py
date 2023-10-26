@@ -121,6 +121,19 @@ class Signup(Resource):
             db.session.rollback()
             return {'error': '422 Unprocessable Entity'}, 422
 
+class Login(Resource):
+    def post(self):
+        request_json = request.get_json()
+        username = request_json.get('username')
+        password = request_json.get('password')
+        
+        user = User.find_by_username(username)
+        if user and user.verify_password(password):
+            session['user_id'] = user.id
+            return user.to_dict(), 200
+        else:
+            return {'error': 'Invalid username or password'}, 401
+
 api.add_resource(Users, "/users")
 api.add_resource(Games, "/games")
 api.add_resource(GameById, "/games/<int:id>")
@@ -128,6 +141,7 @@ api.add_resource(UserFavorites, "/users/<int:user_id>/favorites")
 api.add_resource(AddFavoriteGame, "/users/<int:user_id>/favorites/<int:game_id>")
 api.add_resource(RemoveFavoriteGame, "/users/<int:user_id>/favorites/<int:game_id>")
 api.add_resource(Signup, '/signup', endpoint='signup')
+api.add_resource(Login, '/login', endpoint='login')
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

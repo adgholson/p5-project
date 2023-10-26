@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import './SignUpPage.css';
+import VideoBackground from "./VideoBackground";
 import { Form, Button, Modal } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 function SignUpPage({ onLogin }) {
+  const history = useHistory();
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -35,6 +38,7 @@ function SignUpPage({ onLogin }) {
 
   return (
     <div className="signup-page">
+      <VideoBackground/>
       <div className="form-container">
         <h1 className="signup-form-title">Sign Up</h1>
         <Form onSubmit={handleSubmit}>
@@ -81,7 +85,7 @@ function SignUpPage({ onLogin }) {
         </Form.Group>
         </Form>
         <h2 className="signup-form-account-text">Have an account?</h2>
-        <h2 className="signup-form-login-text">Login!</h2>
+        <h2 className="signup-form-login-text" onClick={() => history.push('/login')}>Login!</h2>
       </div>
     </div>
   );
