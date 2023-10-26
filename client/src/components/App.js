@@ -6,6 +6,7 @@ import SignUpPage from "./SignUpPage";
 import LoginPage from "./LoginPage";
 import Dashboard from "./Dashboard";
 import HomePage from "./HomePage";
+import SearchPage from "./SearchPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,6 +26,7 @@ function App() {
           <Route path="/login" render={(props) => <LoginPage {...props} onLogin={handleLogin} />} />
           <Route path="/signup" component={SignUpPage} />
           <Route path="/dashboard" render={(props) => <Dashboard {...props} user={user} setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} />
+          <Route path="/search" component={SearchPage} />
         </Switch>
         <Footer />
       </div>
