@@ -35,8 +35,8 @@ function App() {
           <Route path="/login" render={(props) => <LoginPage {...props} onLogin={handleLogin} />} />
           <Route path="/signup" component={SignUpPage} />
           <Route path="/dashboard" render={(props) => <Dashboard {...props} user={user} setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} />
-          <Route path="/community" exact render={() => <CommunityPage games={games} />} />
-          <Route path="/gamedetails/:gameId" render={(props) => <GameDetailsPage {...props} games={games} />} />
+          <Route path="/community" exact render={() => <CommunityPage games={games} user={user} />} />
+          <Route path="/gamedetails/:gameId" render={(props) => <GameDetailsPage {...props} games={games} user={user} />} />
         </Switch>
         <Footer />
       </div>

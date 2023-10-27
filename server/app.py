@@ -35,7 +35,7 @@ class Users(Resource):
 
 class Games(Resource):
     def get(self):
-        games = Game.query.all()  # Fetch games from the database using SQLAlchemy
+        games = Game.query.all() 
         game_list = []
         for game in games:
             game_data = {
@@ -141,6 +141,31 @@ class Login(Resource):
         else:
             return {'error': 'Invalid username or password'}, 401
 
+class Reviews(Resource):
+    def post(self):
+        request_json = request.get_json()
+        content = request_json.get('content')
+        rating = request_json.get('rating')
+        user_id = request_json.get('user_id')
+        game_id = request_json.get('game_id')
+        
+        try:
+            # Validate user and game IDs
+            user = User.query.get(user_id)
+            game = Game.query.get(game_id)
+            if not user or not game:
+                return {'error': 'Invalid user or game ID'}, 400
+            
+            # Create and add the review to the database
+            review = Review(content=content, rating=rating, user_id=user_id, game_id=game_id)
+            db.session.add(review)
+            db.session.commit()
+            
+            return {'message': 'Review posted successfully'}, 201
+        except Exception as e:
+            db.session.rollback()
+            return {'error': str(e)}, 500
+
 api.add_resource(Users, "/users")
 api.add_resource(Games, "/games")
 api.add_resource(GameById, "/games/<int:id>")
@@ -149,6 +174,7 @@ api.add_resource(AddFavoriteGame, "/users/<int:user_id>/favorites/<int:game_id>"
 api.add_resource(RemoveFavoriteGame, "/users/<int:user_id>/favorites/<int:game_id>")
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(Login, '/login', endpoint='login')
+api.add_resource(Reviews, '/reviews')
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

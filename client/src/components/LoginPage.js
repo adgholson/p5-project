@@ -25,8 +25,8 @@ function LoginPage({ onLogin }) {
       if (r.ok) {
         r.json().then((user) => {
           console.log(user);
-          const { username, email } = user;
-          onLogin({ username, email });
+          const { id, username, email } = user;
+          onLogin({ id, username, email });
           history.push("/dashboard");
         });
       } else {
