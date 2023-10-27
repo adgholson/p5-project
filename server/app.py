@@ -35,12 +35,19 @@ class Users(Resource):
 
 class Games(Resource):
     def get(self):
-        return make_response({"games": games}, 200)
-
-    def post(self):
-        data = request.get_json()
-        games.append(data)
-        return make_response(data, 201)
+        games = Game.query.all()  # Fetch games from the database using SQLAlchemy
+        game_list = []
+        for game in games:
+            game_data = {
+                "id": game.id,
+                "title": game.title,
+                "description": game.description,
+                "release_date": game.release_date,
+                "cover_image": game.cover_image,
+                "platforms": game.platforms
+            }
+            game_list.append(game_data)
+        return make_response({"games": game_list}, 200)
 
 class GameById(Resource):
     def get(self, id):
