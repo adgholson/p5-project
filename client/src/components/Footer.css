@@ -13,8 +13,9 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    z-index: 1000;
+    z-index: 10;
     border-top: solid 5px #D46531;
+    position: relative;
 }
 
 .footer-logo {

@@ -150,7 +150,6 @@ class Game(db.Model, SerializerMixin):
     description = db.Column(db.String, nullable=False)
     release_date = db.Column(db.String, nullable=False)
     cover_image = db.Column(db.String, nullable=False)
-    genres = db.Column(db.String, nullable=False)
     platforms = db.Column(db.String, nullable=False)
 
     # Relationships
@@ -189,12 +188,6 @@ class Game(db.Model, SerializerMixin):
             raise ValueError("Cover image is required.")
         return cover_image
 
-    @validates('genres')
-    def validate_genres(self, key, genres):
-        if not genres:
-            raise ValueError("Genres are required.")
-        return genres
-
     @validates('platforms')
     def validate_platforms(self, key, platforms):
         if not platforms:
@@ -202,4 +195,4 @@ class Game(db.Model, SerializerMixin):
         return platforms
 
     def __repr__(self):
-        return f'<Game {self.id}, {self.title}, {self.description}, {self.release_date}, {self.cover_image}, {self.genres}, {self.platforms}>'
+        return f'<Game {self.id}, {self.title}, {self.description}, {self.release_date}, {self.cover_image}, {self.platforms}>'
