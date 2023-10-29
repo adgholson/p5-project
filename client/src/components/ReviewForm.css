@@ -41,3 +41,8 @@
 .form-rating{
     padding: 40px;
 }
+
+.review-form-error{
+    text-align: center;
+    font-size: 20px; 
+}

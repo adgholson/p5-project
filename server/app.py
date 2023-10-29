@@ -46,6 +46,7 @@ def get_game_reviews(game_id):
 
 games = []
 users = []
+reviews = []
 
 class Users(Resource):
     def get(self):
@@ -156,6 +157,43 @@ class ReviewsByUserId(Resource):
         } for review in reviews]
         return make_response({"reviews": review_list}, 200)
 
+class Reviews(Resource):
+    def get(self):
+        reviews = Review.query.all()
+        review_list = []
+        for review in reviews:
+            review_data = {
+                "id": review.id,
+                "content": review.content,
+                "rating": review.rating,
+                "user_id": review.user_id,
+                "game_id": review.game_id
+            }
+            review_list.append(review_data)
+        return make_response({"reviews": review_list}, 200)
+
+    def post(self):
+        data = request.get_json()
+        content = data.get("content")
+        rating = data.get("rating")
+        user_id = data.get("user_id")
+        game_id = data.get("game_id")
+
+        if not content or not rating or not user_id or not game_id:
+            return make_response({"error": "Missing required fields"}, 400)
+
+        user = User.query.get(user_id)
+        game = Game.query.get(game_id)
+
+        if not user or not game:
+            return make_response({"error": "Invalid user_id or game_id"}, 404)
+
+        new_review = Review(content=content, rating=rating, user=user, game=game)
+        db.session.add(new_review)
+        db.session.commit()
+
+        return make_response({"message": "Review added successfully"}, 201)
+
 api.add_resource(Users, "/users")
 api.add_resource(UserById, "/users/<int:id>")
 api.add_resource(Games, "/games")
@@ -164,6 +202,7 @@ api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(ReviewsByGameId, "/reviews/game/<int:game_id>")
 api.add_resource(ReviewsByUserId, "/reviews/user/<int:user_id>")
+api.add_resource(Reviews, "/reviews")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

@@ -69,5 +69,10 @@
   
 .review-ids{
   text-align: center;
-  padding: 10px;
+  padding-top: 10px;
+}
+
+.reviews-list{
+  margin-left: 6rem;
+  margin-right: 6rem;
 }
