@@ -1,15 +1,25 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import "./ReviewForm.css";
 
 const ReviewForm = ({ gameId, onReviewSubmit, user }) => {
   const [content, setContent] = useState("");
-  const [rating, setRating] = useState(1);
+  const [rating, setRating] = useState("");
+  const [showError, setShowError] = useState(false);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`/api/reviews`, {
+    if (!user) {
+      setShowError(true);
+      return;
+    }
+
+  const integerGameId = parseInt(gameId, 10);
+  const integerUserId = parseInt(user.id, 10);
+
+    fetch(`/reviews`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -17,15 +27,16 @@ const ReviewForm = ({ gameId, onReviewSubmit, user }) => {
       body: JSON.stringify({
         content,
         rating,
-        user_id: user.id,
-        game_id: gameId,
+        user_id: integerUserId,
+        game_id: integerGameId,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         onReviewSubmit(data);
         setContent("");
-        setRating(1);
+        setRating("");
+        window.location.reload();
       })
       .catch((error) => console.error("Error:", error));
   };
@@ -33,6 +44,7 @@ const ReviewForm = ({ gameId, onReviewSubmit, user }) => {
   return (
     <div className="review-form-div">
     <h1 className="review-form-title">Add a Review!</h1>
+    {showError && <Alert variant="danger" className="review-form-error"><strong>Error:</strong> You must be logged in to post a review.</Alert>}
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="content">
         <Form.Label>Review</Form.Label>
@@ -46,7 +58,7 @@ const ReviewForm = ({ gameId, onReviewSubmit, user }) => {
       </Form.Group>
       <Form.Group controlId="rating" className="form-rating">
         <Form.Label>Rating</Form.Label>
-        <Form.Control className="rating-control" as="select" value={rating} onChange={(e) => setRating(e.target.value)} required>
+        <Form.Control className="rating-control" as="select" value={rating} onChange={(e) => setRating(parseInt(e.target.value, 10))} required>
         <option value="">Select a Rating</option>
         <option value="1">1</option>
         <option value="2">2</option>
