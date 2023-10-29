@@ -25,13 +25,46 @@ def check_if_logged_in():
     if (request.endpoint) not in open_access_list and (not session.get('user_id')):
         return {'error': '401 Unauthorized'}, 401
 
+@app.route('/games/<int:game_id>/reviews', methods=['GET'])
+def get_game_reviews(game_id):
+    selected_game = Game.query.get(game_id)
+    if selected_game:
+        game_reviews = selected_game.reviews
+        reviews_data = []
+        for review in game_reviews:
+            review_data = {
+                "id": review.id,
+                "content": review.content,
+                "rating": review.rating,
+                "user_id": review.user_id
+            }
+            reviews_data.append(review_data)
+        return jsonify({"reviews": reviews_data}), 200
+    else:
+        return jsonify({"error": "Game not found"}), 404
+
 
 games = []
 users = []
 
 class Users(Resource):
     def get(self):
-        return make_response({"users": users}, 200)
+        users = User.query.all()
+        user_list = [user.to_dict() for user in users]
+        return make_response({"users": user_list}, 200)
+
+class UserById(Resource):
+    def get(self, id):
+        user = User.query.get(id)
+        if user:
+            user_data = {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email
+            }
+            return make_response(user_data, 200)
+        else:
+            return make_response({"error": "User not found"}, 404)
 
 class Games(Resource):
     def get(self):
@@ -51,61 +84,19 @@ class Games(Resource):
 
 class GameById(Resource):
     def get(self, id):
-        game = next((game for game in games if game["id"] == id), None)
+        game = Game.query.get(id) 
         if game:
-            return make_response(game, 200)
+            game_data = {
+                "id": game.id,
+                "title": game.title,
+                "description": game.description,
+                "release_date": game.release_date,
+                "cover_image": game.cover_image,
+                "platforms": game.platforms
+            }
+            return make_response(game_data, 200)
         else:
             return make_response({"error": "Game not found"}, 404)
-
-    def put(self, id):
-        game = next((game for game in games if game["id"] == id), None)
-        if game:
-            data = request.get_json()
-            game.update(data)
-            return make_response(game, 200)
-        else:
-            return make_response({"error": "Game not found"}, 404)
-
-    def delete(self, id):
-        global games
-        games = [game for game in games if game["id"] != id]
-        return make_response({}, 204)
-
-class UserFavorites(Resource):
-    def get(self, user_id):
-        user = next((user for user in users if user["id"] == user_id), None)
-        if user:
-            favorites = user.get("favorites", [])
-            return make_response({"favorites": favorites}, 200)
-        else:
-            return make_response({"error": "User not found"}, 404)
-
-class AddFavoriteGame(Resource):
-    def post(self, user_id, game_id):
-        user = next((user for user in users if user["id"] == user_id), None)
-        if user:
-            game = next((game for game in games if game["id"] == game_id), None)
-            if game:
-                user.setdefault("favorites", []).append(game)
-                return make_response(game, 201)
-            else:
-                return make_response({"error": "Game not found"}, 404)
-        else:
-            return make_response({"error": "User not found"}, 404)
-
-class RemoveFavoriteGame(Resource):
-    def delete(self, user_id, game_id):
-        user = next((user for user in users if user["id"] == user_id), None)
-        if user:
-            favorites = user.get("favorites", [])
-            game = next((game for game in favorites if game["id"] == game_id), None)
-            if game:
-                user["favorites"].remove(game)
-                return make_response({}, 204)
-            else:
-                return make_response({"error": "Game not in favorites"}, 404)
-        else:
-            return make_response({"error": "User not found"}, 404)
 
 class Signup(Resource):
     def post(self):
@@ -141,40 +132,38 @@ class Login(Resource):
         else:
             return {'error': 'Invalid username or password'}, 401
 
-class Reviews(Resource):
-    def post(self):
-        request_json = request.get_json()
-        content = request_json.get('content')
-        rating = request_json.get('rating')
-        user_id = request_json.get('user_id')
-        game_id = request_json.get('game_id')
-        
-        try:
-            # Validate user and game IDs
-            user = User.query.get(user_id)
-            game = Game.query.get(game_id)
-            if not user or not game:
-                return {'error': 'Invalid user or game ID'}, 400
-            
-            # Create and add the review to the database
-            review = Review(content=content, rating=rating, user_id=user_id, game_id=game_id)
-            db.session.add(review)
-            db.session.commit()
-            
-            return {'message': 'Review posted successfully'}, 201
-        except Exception as e:
-            db.session.rollback()
-            return {'error': str(e)}, 500
+class ReviewsByGameId(Resource):
+    def get(self, game_id):
+        reviews = Review.query.filter_by(game_id=game_id).all()
+        review_list = [{
+            "id": review.id,
+            "content": review.content,
+            "rating": review.rating,
+            "user_id": review.user_id,
+            "game_id": review.game_id
+        } for review in reviews]
+        return make_response({"reviews": review_list}, 200)
+
+class ReviewsByUserId(Resource):
+    def get(self, user_id):
+        reviews = Review.query.filter_by(user_id=user_id).all() 
+        review_list = [{
+            "id": review.id,
+            "content": review.content,
+            "rating": review.rating,
+            "user_id": review.user_id,
+            "game_id": review.game_id
+        } for review in reviews]
+        return make_response({"reviews": review_list}, 200)
 
 api.add_resource(Users, "/users")
+api.add_resource(UserById, "/users/<int:id>")
 api.add_resource(Games, "/games")
 api.add_resource(GameById, "/games/<int:id>")
-api.add_resource(UserFavorites, "/users/<int:user_id>/favorites")
-api.add_resource(AddFavoriteGame, "/users/<int:user_id>/favorites/<int:game_id>")
-api.add_resource(RemoveFavoriteGame, "/users/<int:user_id>/favorites/<int:game_id>")
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(Login, '/login', endpoint='login')
-api.add_resource(Reviews, '/reviews')
+api.add_resource(ReviewsByGameId, "/reviews/game/<int:game_id>")
+api.add_resource(ReviewsByUserId, "/reviews/user/<int:user_id>")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
