@@ -59,5 +59,15 @@
     text-align: center;
   }
 
+  .review-usernames{
+    color: #D46531;
+  }
 
+  .review-ratings{
+    color: #D46531;
+  }
   
+.review-ids{
+  text-align: center;
+  padding: 10px;
+}
