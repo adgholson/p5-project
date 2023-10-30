@@ -66,6 +66,37 @@ class UserById(Resource):
             return make_response(user_data, 200)
         else:
             return make_response({"error": "User not found"}, 404)
+        
+class UserFavorites(Resource):
+    def get(self, user_id):
+        favorite_games = FavoriteGame.query.filter_by(user_id=user_id).all()
+        game_list = [{"id": fav.game.id, "title": fav.game.title} for fav in favorite_games]
+        return make_response({"favorite_games": game_list}, 200)
+    
+    def post(self, user_id):
+        data = request.get_json()
+        game_id = data.get("game_id")
+
+        if not game_id:
+            return make_response({"error": "Invalid game_id"}, 400)
+
+        user = User.query.get(user_id)
+        game = Game.query.get(game_id)
+
+        if not user or not game:
+            return make_response({"error": "User or game not found"}, 404)
+
+        existing_favorite = FavoriteGame.query.filter_by(user_id=user_id).first()
+
+        if existing_favorite:
+            existing_favorite.game_id = game_id
+            db.session.commit()
+            return make_response({"message": "Favorite game updated successfully"}, 200)
+        else:
+            favorite_game = FavoriteGame(user_id=user_id, game_id=game_id)
+            db.session.add(favorite_game)
+            db.session.commit()
+            return make_response({"message": "Favorite game added successfully"}, 201)
 
 class Games(Resource):
     def get(self):
@@ -215,8 +246,35 @@ class ReviewById(Resource):
         else:
             return make_response({"error": "Review not found"}, 404)
 
+class FavoriteGames(Resource):
+    def post(self):
+        data = request.get_json()
+        user_id = data.get("user_id")
+        game_id = data.get("game_id")
+        
+        if not user_id or not game_id:
+            return make_response({"error": "Invalid user_id or game_id"}, 400)
+        
+        user = User.query.get(user_id)
+        game = Game.query.get(game_id)
+        
+        if not user or not game:
+            return make_response({"error": "User or game not found"}, 404)
+        
+        favorite_game = FavoriteGame(user_id=user_id, game_id=game_id)
+        db.session.add(favorite_game)
+        db.session.commit()
+        
+        return make_response({"message": "Game added to favorites successfully"}, 201)
+
+    def get(self, user_id):
+        favorite_games = FavoriteGame.query.filter_by(user_id=user_id).all()
+        game_list = [{"id": fav.game.id, "title": fav.game.title} for fav in favorite_games]
+        return make_response({"favorite_games": game_list}, 200)
+
 api.add_resource(Users, "/users")
 api.add_resource(UserById, "/users/<int:id>")
+api.add_resource(UserFavorites, "/users/<int:user_id>/favorites")
 api.add_resource(Games, "/games")
 api.add_resource(GameById, "/games/<int:id>")
 api.add_resource(Signup, '/signup', endpoint='signup')
@@ -225,6 +283,7 @@ api.add_resource(ReviewsByGameId, "/reviews/game/<int:game_id>")
 api.add_resource(ReviewsByUserId, "/reviews/user/<int:user_id>")
 api.add_resource(Reviews, "/reviews")
 api.add_resource(ReviewById, "/reviews/<int:review_id>")
+api.add_resource(FavoriteGames, "/favorite-games")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

@@ -74,7 +74,7 @@ const ReviewForm = ({ gameId, onReviewSubmit, user, initialReview }) => {
 
   return (
     <div className="review-form-div">
-      <h1 className="review-form-title">{initialReview ? "Edit Review" : "Add a Review"}</h1>
+      <h1 className="review-form-title">{initialReview ? "Edit Review!" : "Add a Review!"}</h1>
       {showError && <Alert variant="danger" className="review-form-error"><strong>Error:</strong> You must be logged in to post a review.</Alert>}
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="content">

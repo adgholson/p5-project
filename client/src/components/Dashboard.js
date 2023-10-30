@@ -10,9 +10,20 @@ const Dashboard = ({ user, setIsLoggedIn, setUser }) => {
   const { gameId } = useParams();
   const [userReviews, setUserReviews] = useState([]);
   const [selectedReviewId, setSelectedReviewId] = useState(null);
+  const [favoriteGameTitle, setFavoriteGameTitle] = useState("");
 
   useEffect(() => {
     if (user) {
+      fetch(`/users/${user.id}/favorites`)
+        .then((response) => response.json())
+        .then((data) => {
+          const favoriteGame = data.favorite_games[0];
+          if (favoriteGame) {
+            setFavoriteGameTitle(favoriteGame.title);
+          }
+        })
+        .catch((error) => console.error("Error fetching favorite game:", error));
+
       fetch(`/reviews/user/${user.id}`)
         .then((response) => response.json())
         .then((data) => setUserReviews(data.reviews))
@@ -73,9 +84,13 @@ const Dashboard = ({ user, setIsLoggedIn, setUser }) => {
             <h1 className="dash-header">Thank you for joining the community!</h1>
             <Button className="dash-logout-button" onClick={handleLogout}>Logout</Button>
         </div>
+        <div className="black-overlay-favs">
+            <h1 className="dash-title-favs">My Favorite Game!</h1>
+            <h3 className="fav-game-title">{favoriteGameTitle}</h3>
+        </div>
         <div className="black-overlay2">
             <ul className="dash-review-list">
-              <h1 className="dash-review-list-title">My Reviews</h1>
+              <h1 className="dash-review-list-title">My Reviews!</h1>
               {userReviews.map((review) => (
                 <li key={review.id} className="review-ids">
                   <strong className="dash-review-number">Review ID: {review.id}</strong> {review.content} <strong className="dash-review-ratings">Rating:</strong> {review.rating}
