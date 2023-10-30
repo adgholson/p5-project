@@ -16,6 +16,21 @@ function SignUpPage({ onLogin }) {
     e.preventDefault();
     setErrors([]);
     setIsLoading(true);
+    if (!email) {
+      setErrors(prevErrors => [...prevErrors, "Email is required."]);
+      setIsLoading(false);
+    }
+    if (!username) {
+      setErrors(prevErrors => [...prevErrors, "Username is required."]);
+      setIsLoading(false);
+    }
+    if (!password) {
+      setErrors(prevErrors => [...prevErrors, "Password is required."]);
+      setIsLoading(false);
+    }
+    if (errors.length > 0) {
+      return;
+    }
     fetch("/signup", {
       method: "POST",
       headers: {
@@ -43,10 +58,11 @@ function SignUpPage({ onLogin }) {
         <h1 className="signup-form-title">Sign Up</h1>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formEmail" className="form-group">
-            <Form.Label>Email</Form.Label>
+            <Form.Label>Email</Form.Label> {errors.includes("Email is required.") && <p className="error-message">Email is required</p>}
+            {errors.includes("Email is required and must fit example@email.com format.") && <p className="error-message">Email is required and must fit example@email.com format.</p>}
             <Form.Control
               type="text"
-              placeholder="Enter an Email"
+              placeholder="Enter an Email (example@email.com)"
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -54,7 +70,7 @@ function SignUpPage({ onLogin }) {
           </Form.Group>
 
           <Form.Group controlId="formUsername" className="form-group">
-            <Form.Label>Username</Form.Label>
+            <Form.Label>Username</Form.Label> {errors.includes("Username is required.") && <p className="error-message">Username is required</p>}
             <Form.Control
               type="text"
               placeholder="Enter a Username"
@@ -65,10 +81,11 @@ function SignUpPage({ onLogin }) {
           </Form.Group>
 
           <Form.Group controlId="formPassword" className="form-group">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Password</Form.Label> {errors.includes("Password is required.") && <p className="error-message">Password is required</p>}
+            {errors.includes("Password is required and must contain at least one uppercase letter, one lowercase letter, one number, and one special character.") && <p className="error-message">Password is required and must contain at least one uppercase letter, one lowercase letter, one number, and one special character.</p>}
             <Form.Control
               type="password"
-              placeholder="Enter a Password"
+              placeholder="Enter a Password (Include 1 number)"
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

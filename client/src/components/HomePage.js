@@ -10,11 +10,11 @@ function HomePage() {
         <div className="home-center-div">
             <VideoBackground/>
             <div className="black-overlay">
-                <h1 className="home-title">Welcome to GameSpark!</h1>
-                <h3 className="home-header">Welcome to the Heart of Gaming Enthusiasts! Unlock a world of game reviews and vibrant community interactions.</h3>
-                <h3 className="home-header">Join our community by signing up, or dive right in by logging in to connect, explore, and share your passion for gaming!</h3>
+                <h1 className="home-title">Welcome to</h1>
+                <img className="home-logo" src="..\LDLogoLong_Shadow.png" alt="Logo" />
+                <h1 className="home-title">Productions!</h1>
                 <Button className="home-signup-button" onClick={() => history.push('/signup')}>
-                SignUp!
+                Join Our Community!
                 </Button>
             </div>
         </div>

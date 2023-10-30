@@ -13,7 +13,19 @@ function LoginPage({ onLogin }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    setErrors([]);
     setIsLoading(true);
+    if (!username) {
+      setErrors(prevErrors => [...prevErrors, "Username is required."]);
+      setIsLoading(false);
+    }
+    if (!password) {
+      setErrors(prevErrors => [...prevErrors, "Password is required."]);
+      setIsLoading(false);
+    }
+    if (errors.length > 0) {
+      return;
+    }
     fetch("/login", {
       method: "POST",
       headers: {
@@ -30,8 +42,17 @@ function LoginPage({ onLogin }) {
           history.push("/dashboard");
         });
       } else {
-        r.json().then((err) => setErrors(err.errors));
+        if (r.status === 401) {
+          setErrors(prevErrors => [...prevErrors, "Invalid username or password. Please try again."]);
+        } else {
+          setErrors(prevErrors => [...prevErrors, "An error occurred. Please try again later."]);
+        }
       }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      setIsLoading(false);
+      setErrors(prevErrors => [...prevErrors, "An error occurred. Please try again later."]);
     });
   }
 
@@ -43,7 +64,7 @@ function LoginPage({ onLogin }) {
         <Form onSubmit={handleSubmit}>
 
           <Form.Group controlId="formUsername" className="form-group">
-            <Form.Label>Username</Form.Label>
+            <Form.Label>Username</Form.Label> {errors.includes("Username is required.") && <p className="error-message">Username is required</p>}
             <Form.Control
               type="text"
               placeholder="Enter your Username"
@@ -54,7 +75,7 @@ function LoginPage({ onLogin }) {
           </Form.Group>
 
           <Form.Group controlId="formPassword" className="form-group">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Password</Form.Label> {errors.includes("Password is required.") && <p className="error-message">Password is required</p>}
             <Form.Control
               type="password"
               placeholder="Enter your Password"

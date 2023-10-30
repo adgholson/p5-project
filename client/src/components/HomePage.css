@@ -1,5 +1,5 @@
 .home-center-div {
-    height: 100vh;
+    height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,7 +26,6 @@
 .home-title{
     font-family: 'Bangers', sans-serif;
     font-size: 70px;
-    padding-top: 15px;
 }
 
 .home-signup-button{
@@ -50,5 +49,9 @@
 .home-header{
     font-family: 'Quicksand', sans-serif;
     font-size: 20px;
-    padding-top: 50px;
+}
+
+.home-logo{
+    height: auto;
+    width: 1000px;
 }

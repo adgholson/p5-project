@@ -101,11 +101,15 @@
   font-family: 'Bangers', sans-serif;
   border: white;
   color: black;
-  margin-top: 1rem;
-  font-size: 40px
+  margin-top: 0.5rem;
+  font-size: 30px
 }
 
 #fav-button:hover{
   background-color: #D46531;
   color: black;
+}
+
+.success-message{
+  color: rgb(0, 198, 0);
 }

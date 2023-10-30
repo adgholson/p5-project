@@ -1,17 +1,20 @@
 import React, { useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import "./ReviewForm.css";
 
 const ReviewForm = ({ gameId, onReviewSubmit, user, initialReview }) => {
   const [content, setContent] = useState(initialReview ? initialReview.content : "");
   const [rating, setRating] = useState(initialReview ? initialReview.rating : "");
-  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!user) {
-      setShowError(true);
+      setErrorMessage("Please log in to post a review.");
+      return;
+    }
+    if (!content.trim() || !rating) {
+      setErrorMessage("Review and Rating are required.");
       return;
     }
 
@@ -75,7 +78,7 @@ const ReviewForm = ({ gameId, onReviewSubmit, user, initialReview }) => {
   return (
     <div className="review-form-div">
       <h1 className="review-form-title">{initialReview ? "Edit Review!" : "Add a Review!"}</h1>
-      {showError && <Alert variant="danger" className="review-form-error"><strong>Error:</strong> You must be logged in to post a review.</Alert>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="content">
           <Form.Label>Review</Form.Label>
@@ -84,12 +87,11 @@ const ReviewForm = ({ gameId, onReviewSubmit, user, initialReview }) => {
             rows={3}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            required
           />
         </Form.Group>
         <Form.Group controlId="rating" className="form-rating">
           <Form.Label>Rating</Form.Label>
-          <Form.Control className="rating-control" as="select" value={rating} onChange={(e) => setRating(parseInt(e.target.value, 10))} required>
+          <Form.Control className="rating-control" as="select" value={rating} onChange={(e) => setRating(parseInt(e.target.value, 10))}>
             <option value="">Select a Rating</option>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
               <option key={num} value={num}>
