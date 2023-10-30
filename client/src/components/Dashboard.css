@@ -1,5 +1,5 @@
 .dash-container{
-    height: 100vh;
+    height: 180vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,14 +13,15 @@
     max-width: 800px;
     max-height: 300px;
     padding: 20px;
-    border: 1px solid #D46531;
+    border: 1px solid white;
     border-radius: 8px;
     box-shadow: 0 4px 8px black;
     background-color: Black;
     color: white;
     font-family: 'Quicksand', sans-serif;
     text-align: center;
-    margin-bottom: 25%;
+    margin-bottom: 60%;
+    z-index: 2;
 }
 
 .dash-title{
@@ -40,6 +41,7 @@
     font-size: 30px;
     transition: all 0.3s ease;
     margin: 30px;
+    z-index: 3;
 }
 
 .dash-logout-button:hover{
@@ -52,31 +54,93 @@
     height: 100%;
     position: absolute;
     max-width: 1400px;
-    max-height: 1000px;
+    max-height: 1500px;
     padding: 20px;
     border: 1px solid #D46531;
     box-shadow: 0 4px 8px black;
-    background-color: Black;
+    background-color: rgba(0, 0, 0, 0.7);
     color: white;
     font-family: 'Quicksand', sans-serif;
     text-align: center;
-    z-index: -1;
-}
-
-.dash-info-title{
-    font-family: 'Bangers', sans-serif;
-    font-size: 50px;
-    text-align: left;
-    margin-left: 35px;
-    margin-top: 35%;
-}
-
-.dash-info-list{
-    list-style-type: none;
-    font-size: 20px;
-    text-align: left;
+    z-index: 1;
+    display: flex;
+    justify-content: space-around;
 }
 
 .dash-header{
     font-size: 30px;
+}
+
+.dash-review-list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 27%;
+    margin-left: 5rem;
+    margin-right: 5rem;
+    z-index: 99;
+}
+
+.dash-review-list-title{
+    font-family: 'Bangers', sans-serif;
+    font-size: 60px;
+    text-align: center;
+}
+
+.dash-review-number{
+    color: #D46531;
+  }
+
+.dash-review-ratings{
+    color: #D46531;
+  }
+  
+.review-ids{
+  text-align: center;
+}
+
+.review-delete-button{
+    background-color: #D46531;
+    margin-right: 40px;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: 'Bangers', sans-serif;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+    position: relative;
+}
+
+.review-delete-button:hover{
+    background-color: white;
+    color: black; 
+}
+
+.review-edit-button{
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: 'Bangers', sans-serif;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+    position: relative;
+}
+
+.review-edit-button:hover{
+    background-color: #D46531;
+    color: black; 
+}
+
+.dash-review-form{
+    margin-top: 40%;
+    width: 100%;
+    margin-left: 27%;
+    height: 100%;
+    max-height: 500px;
+    z-index: 99;
 }

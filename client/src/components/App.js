@@ -20,7 +20,7 @@ function App() {
   };
 
   useEffect(() => {
-    fetch("/games")
+    fetch(`/games`)
       .then((response) => response.json())
       .then((data) => setGames(data.games))
       .catch((error) => console.error("Error fetching games:", error));
