@@ -52,3 +52,8 @@
     text-decoration: none;
     color: white;
   }
+
+  .game-titles{
+    font-family: 'Bangers', sans-serif;
+    font-size: 20px;
+  }

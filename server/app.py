@@ -194,6 +194,27 @@ class Reviews(Resource):
 
         return make_response({"message": "Review added successfully"}, 201)
 
+class ReviewById(Resource):
+    def delete(self, review_id):
+        review = Review.query.get(review_id)
+        if review:
+            db.session.delete(review)
+            db.session.commit()
+            return make_response({"message": "Review deleted successfully"}, 200)
+        else:
+            return make_response({"error": "Review not found"}, 404)
+        
+    def patch(self, review_id):
+        review = Review.query.get(review_id)
+        if review:
+            data = request.get_json()
+            review.content = data.get("content")
+            review.rating = data.get("rating")
+            db.session.commit()
+            return make_response({"message": "Review updated successfully"}, 200)
+        else:
+            return make_response({"error": "Review not found"}, 404)
+
 api.add_resource(Users, "/users")
 api.add_resource(UserById, "/users/<int:id>")
 api.add_resource(Games, "/games")
@@ -203,6 +224,7 @@ api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(ReviewsByGameId, "/reviews/game/<int:game_id>")
 api.add_resource(ReviewsByUserId, "/reviews/user/<int:user_id>")
 api.add_resource(Reviews, "/reviews")
+api.add_resource(ReviewById, "/reviews/<int:review_id>")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

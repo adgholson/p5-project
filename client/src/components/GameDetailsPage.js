@@ -68,7 +68,7 @@ const GameDetailsPage = ({ user }) => {
           <h2 className="reviews-title">Reviews!</h2>
           {reviews.map(review => (
             <div key={review.id} className="review-ids">
-              <strong className="review-usernames">{review?.username || "Anonymous User"}</strong>: {review.content} <strong className="review-ratings">Rating</strong>: {review.rating}
+              <strong className="review-usernames">{review?.username || "Anonymous User"}:</strong> {review.content} <strong className="review-ratings">Rating:</strong> {review.rating}
             </div>
           ))}
         </div>
