@@ -9,7 +9,7 @@ const Navbar = ({ isLoggedIn }) => {
         <nav className="navbar">
             <div className="navbar-left">
                 <img className="navbar-logo" src="..\LDLogoBang_NoWhite.png" alt="Logo" />
-                <span className="navbar-title">GameSpark</span>
+                <span className="navbar-title">LegendDairy</span>
             </div>
             <div className="navbar-right">
                 <ul className="navbar-links">

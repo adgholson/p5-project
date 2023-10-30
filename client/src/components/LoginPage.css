@@ -78,3 +78,7 @@
     border-color: #D46531;
     box-shadow: #D46531;
 }
+
+.error-message{
+    color: red;
+}

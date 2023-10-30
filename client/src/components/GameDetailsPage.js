@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import VideoBackground from "./VideoBackground";
 import { Card, Button } from "react-bootstrap";
@@ -9,8 +9,9 @@ const GameDetailsPage = ({ user }) => {
   const { gameId } = useParams();
   const [game, setGame] = useState(null);
   const [reviews, setReviews] = useState([]);
-  const buttonRef = useRef(null);
   const [favoriteGame, setFavoriteGame] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     fetch(`/games/${gameId}`)
@@ -44,7 +45,7 @@ const GameDetailsPage = ({ user }) => {
 
   const handleFavoriteClick = () => {
     if (!user) {
-      window.alert("Please log in to mark this game as your favorite!");
+      setErrorMessage("Please log in to mark this game as your favorite.");
       return;
     }
     fetch(`/users/${user.id}/favorites`, {
@@ -59,12 +60,14 @@ const GameDetailsPage = ({ user }) => {
       .then((response) => {
         if (response.ok) {
           setFavoriteGame({ id: gameId });
-          window.alert("This game is now marked as your favorite!");
+          setSuccessMessage("This game has been marked as your favorite!");
         } else {
           console.error("Error setting favorite game");
         }
       })
-      .catch((error) => console.error("Error setting favorite game:", error));
+      .catch((error) => {
+        console.error("Error setting favorite game:", error);
+      });
   };
 
   const handleReviewSubmit = newReview => {
@@ -91,6 +94,8 @@ const GameDetailsPage = ({ user }) => {
           </Card>
           <ReviewForm gameId={gameId} user={user} onReviewSubmit={handleReviewSubmit} />
           <div className="overlay-favs">
+            {errorMessage && <p className="error-message"><strong>Error:</strong> {errorMessage}</p>}
+            {successMessage && successMessage !== false && <p className="success-message"><strong>Success:</strong> {successMessage}</p>}
             <Button id="fav-button" onClick={handleFavoriteClick}>Make this game my Favorite!</Button>
           </div>
         </div>
