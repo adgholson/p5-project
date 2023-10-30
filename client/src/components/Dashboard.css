@@ -1,5 +1,5 @@
 .dash-container{
-    height: 180vh;
+    height: 210vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,7 +20,7 @@
     color: white;
     font-family: 'Quicksand', sans-serif;
     text-align: center;
-    margin-bottom: 60%;
+    margin-bottom: 72%;
     z-index: 2;
 }
 
@@ -49,12 +49,42 @@
     color: black; 
 }
 
+.black-overlay-favs {
+    width: 100%; 
+    height: 100%;
+    position: absolute;
+    max-width: 1000px;
+    max-height: 250px;
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px black;
+    background-color: Black;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+    text-align: center;
+    margin-bottom: 32%;
+    z-index: 2;
+}
+
+.dash-title-favs{
+    font-family: 'Bangers', sans-serif;
+    font-size: 70px;
+    padding-top: 15px;
+}
+
+.fav-game-title{
+    font-family: 'Bangers', sans-serif;
+    font-size: 50px;
+    color: #D46531;
+}
+
 .black-overlay2 {
     width: 100%; 
     height: 100%;
     position: absolute;
     max-width: 1400px;
-    max-height: 1500px;
+    max-height: 1700px;
     padding: 20px;
     border: 1px solid #D46531;
     box-shadow: 0 4px 8px black;
@@ -75,7 +105,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    margin-top: 27%;
+    margin-top: 47%;
     margin-left: 5rem;
     margin-right: 5rem;
     z-index: 99;
@@ -137,7 +167,7 @@
 }
 
 .dash-review-form{
-    margin-top: 40%;
+    margin-top: 58%;
     width: 100%;
     margin-left: 27%;
     height: 100%;

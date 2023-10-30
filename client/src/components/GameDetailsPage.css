@@ -55,7 +55,7 @@
   .reviews-title{
     font-family: 'Bangers', sans-serif;
     font-size: 60px;
-    margin-top: 2rem;
+    margin-top: 5rem;
     text-align: center;
   }
 
@@ -75,4 +75,37 @@
 .reviews-list{
   margin-left: 6rem;
   margin-right: 6rem;
+}
+
+.overlay-favs {
+  width: 100%; 
+  height: 100%;
+  position: absolute;
+  max-width: 700px;
+  max-height: 150px;
+  padding: 20px;
+  border: 1px solid white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px black;
+  background-color: Black;
+  color: white;
+  font-family: 'Quicksand', sans-serif;
+  text-align: center;
+  z-index: 2;
+  margin-top: 36.2rem;
+  margin-left: 35.2rem;
+}
+
+#fav-button{
+  background-color: white;
+  font-family: 'Bangers', sans-serif;
+  border: white;
+  color: black;
+  margin-top: 1rem;
+  font-size: 40px
+}
+
+#fav-button:hover{
+  background-color: #D46531;
+  color: black;
 }
