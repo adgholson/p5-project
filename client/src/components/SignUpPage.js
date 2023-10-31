@@ -19,15 +19,15 @@ function SignUpPage() {
     setErrors([]);
     setIsLoading(true);
     if (!email) {
-      setErrors(prevErrors => [...prevErrors, "Email is required."]);
+      setErrors(prevErrors => [...prevErrors, "Email"]);
       setIsLoading(false);
     }
     if (!username) {
-      setErrors(prevErrors => [...prevErrors, "Username is required."]);
+      setErrors(prevErrors => [...prevErrors, "Username"]);
       setIsLoading(false);
     }
     if (!password) {
-      setErrors(prevErrors => [...prevErrors, "Password is required."]);
+      setErrors(prevErrors => [...prevErrors, "Password"]);
       setIsLoading(false);
     }
     if (errors.length > 0) {
@@ -70,8 +70,7 @@ function SignUpPage() {
         <h1 className="signup-form-title">Sign Up</h1>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formEmail" className="form-group">
-            <Form.Label>Email</Form.Label> {errors.includes("Email is required.") && <p className="error-message">Email is required</p>}
-            {errors.includes("Email is required and must fit example@email.com format.") && <p className="error-message">Email is required and must fit example@email.com format.</p>}
+            <Form.Label>Email</Form.Label> {errors.includes("Email") && <p className="error-message">Email is required and must fit example@email.com format.</p>}
             <Form.Control
               type="text"
               placeholder="Enter an Email"
@@ -82,7 +81,7 @@ function SignUpPage() {
           </Form.Group>
 
           <Form.Group controlId="formUsername" className="form-group">
-            <Form.Label>Username</Form.Label> {errors.includes("Username is required.") && <p className="error-message">Username is required</p>}
+            <Form.Label>Username</Form.Label> {errors.includes("Username") && <p className="error-message">Username is required and must include one number.</p>}
             <Form.Control
               type="text"
               placeholder="Enter a Username"
@@ -93,8 +92,7 @@ function SignUpPage() {
           </Form.Group>
 
           <Form.Group controlId="formPassword" className="form-group">
-            <Form.Label>Password</Form.Label> {errors.includes("Password is required.") && <p className="error-message">Password is required</p>}
-            {errors.includes("Password is required and must contain at least one uppercase letter, one lowercase letter, one number, and one special character.") && <p className="error-message">Password is required and must contain at least one uppercase letter, one lowercase letter, one number, and one special character.</p>}
+            <Form.Label>Password</Form.Label> {errors.includes("Password") && <p className="error-message">Password is required and must contain at least one number, and one special character.</p>}
             <Form.Control
               type="password"
               placeholder="Enter a Password"

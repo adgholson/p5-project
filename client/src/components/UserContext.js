@@ -24,12 +24,27 @@ export const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem('user'));
-    if (savedUser) {
-      setUser(savedUser);
-      setIsLoggedIn(true);
+    const savedUser = localStorage.getItem('user');
+  
+    if (savedUser !== null) {
+      try {
+        const userData = JSON.parse(savedUser);
+  
+        if (userData && userData.user) {
+          setUser(userData.user);
+          setIsLoggedIn(true);
+        } else {
+          console.error('Invalid user data structure in localStorage:', userData);
+          localStorage.removeItem('user');
+        }
+      } catch (error) {
+        console.error('Error parsing JSON from localStorage:', error);
+        localStorage.removeItem('user');
+      }
+    } else {
+      history.push('/');
     }
-  }, []);
+  }, [history]);
 
   const updateUser = (newUser) => {
     setUser(newUser);
