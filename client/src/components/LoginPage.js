@@ -3,9 +3,11 @@ import { useHistory } from "react-router-dom";
 import VideoBackground from "./VideoBackground";
 import './LoginPage.css';
 import { Form, Button, Modal } from "react-bootstrap";
+import { useUser } from "./UserContext";
 
-function LoginPage({ onLogin }) {
+function LoginPage() {
   const history = useHistory();
+  const { onLogin } = useUser();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
@@ -36,7 +38,6 @@ function LoginPage({ onLogin }) {
       setIsLoading(false);
       if (r.ok) {
         r.json().then((user) => {
-          console.log(user);
           const { id, username, email } = user;
           onLogin({ id, username, email });
           history.push("/dashboard");

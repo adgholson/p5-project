@@ -3,9 +3,11 @@ import './SignUpPage.css';
 import VideoBackground from "./VideoBackground";
 import { Form, Button, Modal } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { useUser } from "./UserContext";
 
-function SignUpPage({ onLogin }) {
-  const history = useHistory();
+function SignUpPage() {
+    const history = useHistory();
+    const {onLogin} = useUser();
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -41,13 +43,23 @@ function SignUpPage({ onLogin }) {
         username,
         password,
       }),
-    }).then((r) => {
+    })
+    .then((response) => {
       setIsLoading(false);
-      if (r.ok) {
-        r.json().then((user) => onLogin(user));
-      } else {
-        r.json().then((err) => setErrors(err.errors));
+      if (response.ok) {
+        return response.json();
       }
+      if (response.status === 400) {
+        throw new Error("Invalid input. Please check your email, username, and password.");
+      }
+      throw new Error("An error occurred. Please try again later.");
+    })
+    .then((user) => {
+      onLogin(user);
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+      setErrors(["An error occurred. Please try again later."]);
     });
   }
 
@@ -62,7 +74,7 @@ function SignUpPage({ onLogin }) {
             {errors.includes("Email is required and must fit example@email.com format.") && <p className="error-message">Email is required and must fit example@email.com format.</p>}
             <Form.Control
               type="text"
-              placeholder="Enter an Email (example@email.com)"
+              placeholder="Enter an Email"
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -85,7 +97,7 @@ function SignUpPage({ onLogin }) {
             {errors.includes("Password is required and must contain at least one uppercase letter, one lowercase letter, one number, and one special character.") && <p className="error-message">Password is required and must contain at least one uppercase letter, one lowercase letter, one number, and one special character.</p>}
             <Form.Control
               type="password"
-              placeholder="Enter a Password (Include 1 number)"
+              placeholder="Enter a Password"
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

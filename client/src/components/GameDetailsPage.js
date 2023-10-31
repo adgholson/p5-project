@@ -4,12 +4,13 @@ import VideoBackground from "./VideoBackground";
 import { Card, Button } from "react-bootstrap";
 import "./GameDetailsPage.css";
 import ReviewForm from "./ReviewForm";
+import { useUser } from "./UserContext";
 
-const GameDetailsPage = ({ user }) => {
+const GameDetailsPage = () => {
   const { gameId } = useParams();
+  const { user } = useUser();
   const [game, setGame] = useState(null);
   const [reviews, setReviews] = useState([]);
-  const [favoriteGame, setFavoriteGame] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -57,16 +58,16 @@ const GameDetailsPage = ({ user }) => {
         game_id: gameId,
       }),
     })
-      .then((response) => {
+      .then(response => {
         if (response.ok) {
-          setFavoriteGame({ id: gameId });
           setSuccessMessage("This game has been marked as your favorite!");
         } else {
-          console.error("Error setting favorite game");
+          setErrorMessage("Error setting favorite game.");
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("Error setting favorite game:", error);
+        setErrorMessage("Error setting favorite game.");
       });
   };
 
@@ -94,7 +95,7 @@ const GameDetailsPage = ({ user }) => {
           </Card>
           <ReviewForm gameId={gameId} user={user} onReviewSubmit={handleReviewSubmit} />
           <div className="overlay-favs">
-            {errorMessage && <p className="error-message"><strong>Error:</strong> {errorMessage}</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
             {successMessage && successMessage !== false && <p className="success-message"><strong>Success:</strong> {successMessage}</p>}
             <Button id="fav-button" onClick={handleFavoriteClick}>Make this game my Favorite!</Button>
           </div>
