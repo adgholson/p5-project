@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
 import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import GameDetailsPage from "./GameDetailsPage";

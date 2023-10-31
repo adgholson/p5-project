@@ -51,7 +51,13 @@ const ReviewForm = ({ gameId, onReviewSubmit, user, initialReview }) => {
         setRating("");
         window.location.reload();
       })
-      .catch((error) => console.error("Error creating review:", error));
+      .catch((error) => {
+        if (error.message === 'Validation Error') {
+          setErrorMessage("Review content must be at least 30 characters long.");
+        } else {
+          setErrorMessage("Review content must be at least 30 characters long.");
+        }
+      });
   };
 
   const handleUpdateReview = (reviewData) => {
@@ -72,7 +78,13 @@ const ReviewForm = ({ gameId, onReviewSubmit, user, initialReview }) => {
         setRating("");
         window.location.reload();
       })
-      .catch((error) => console.error("Error updating review:", error));
+      .catch((error) => {
+        if (error.message === 'Validation Error') {
+          setErrorMessage("Review content must be at least 30 characters long.");
+        } else {
+          setErrorMessage("Review content must be at least 30 characters long.");
+        }
+      });
   };
 
   return (

@@ -36,8 +36,8 @@ class User(db.Model, SerializerMixin):
         return bcrypt.check_password_hash(self._password_hash, password)
 
     # Relationships
-    reviews = db.relationship('Review', backref='user_reviews', lazy=True)
-    favorite_games = db.relationship('FavoriteGame', backref='user_favorite_games', lazy=True)
+    reviews = db.relationship('Review', backref='user_reviews', lazy=True, overlaps="user")
+    favorite_games = db.relationship('FavoriteGame', backref='user_favorite_games', lazy=True, overlaps="user")
     favorite_games_proxy = association_proxy('user_favorite_games', 'game')
     reviews_proxy = association_proxy('user_reviews', 'game')
 
@@ -53,8 +53,8 @@ class User(db.Model, SerializerMixin):
 
     @validates('_password_hash')
     def validate__password_hash(self, key, _password_hash):
-        if not _password_hash or len(_password_hash) < 4 or not any(char.isupper() for char in _password_hash) or not any(char.islower() for char in _password_hash) or not any(char.isdigit() for char in _password_hash) or not any(char in "!@#$%^&*()_+{}[]|\\:;<>,.?/~" for char in _password_hash):
-            raise ValueError("Password is required and must contain at least one uppercase letter, one lowercase letter, one number, and one special character.")
+        if not _password_hash or len(_password_hash) < 4 or not any(char.isdigit() for char in _password_hash) or not any(char in "!@#$%^&*()_+{}[]|\\:;<>,.?/~" for char in _password_hash):
+            raise ValueError("Password is required and must contain at least one number, and one special character.")
         if not _password_hash.startswith('$2b$'):
             return bcrypt.generate_password_hash(_password_hash).decode('utf-8')
         return _password_hash
@@ -72,8 +72,8 @@ class Review(db.Model, SerializerMixin):
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=False)
 
     # Relationships
-    user = db.relationship('User', backref='user_reviews', lazy=True)
-    game = db.relationship('Game', backref='game_reviews', lazy=True)
+    user = db.relationship('User', backref='user_reviews', lazy=True, overlaps="reviews")
+    game = db.relationship('Game', backref='game_reviews', lazy=True, overlaps="reviews")
     user_proxy = association_proxy('user', 'username')
 
     # Serialization Rules
@@ -121,8 +121,8 @@ class FavoriteGame(db.Model, SerializerMixin):
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=False)
 
     # Relationships
-    user = db.relationship('User', backref='user_favorite_games', lazy=True)
-    game = db.relationship('Game', backref='favorite_games', lazy=True)
+    user = db.relationship('User', backref='user_favorite_games', lazy=True, overlaps="favorite_games")
+    game = db.relationship('Game', backref='favorite_games', lazy=True, overlaps="favorite_games")
     game_proxy = association_proxy('game', 'title')
 
     # Serialization rules
@@ -157,8 +157,8 @@ class Game(db.Model, SerializerMixin):
     platforms = db.Column(db.String, nullable=False)
 
     # Relationships
-    reviews = db.relationship('Review', backref='game_reviews', lazy=True)
-    favorites = db.relationship('FavoriteGame', backref='game_favorites', lazy=True)
+    reviews = db.relationship('Review', backref='game_reviews', lazy=True, overlaps="game")
+    favorites = db.relationship('FavoriteGame', backref='game_favorites', lazy=True, overlaps="game")
     favorite_users_proxy = association_proxy('game_favorites', 'user')
     review_users_proxy = association_proxy('game_reviews', 'user')
 
