@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import VideoBackground from "./VideoBackground";
 import ReviewForm from "./ReviewForm";
 import './Dashboard.css';
+import { useUser } from "./UserContext";
 
-const Dashboard = ({ user, setIsLoggedIn, setUser }) => {
-  const history = useHistory();
+const Dashboard = () => {
   const { gameId } = useParams();
+  const { user, logout, isLoggedIn } = useUser();
   const [userReviews, setUserReviews] = useState([]);
   const [selectedReviewId, setSelectedReviewId] = useState(null);
   const [favoriteGameTitle, setFavoriteGameTitle] = useState("");
@@ -66,53 +67,47 @@ const Dashboard = ({ user, setIsLoggedIn, setUser }) => {
     }
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUser(null);
-    history.push("/login");
-  };
-
   if (!user) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="dash-container">
-        <VideoBackground />
-        <div className="black-overlay-dash">
-            <h1 className="dash-title">Welcome, {user.username}!</h1>
-            <h1 className="dash-header">Thank you for joining the community!</h1>
-            <Button className="dash-logout-button" onClick={handleLogout}>Logout</Button>
-        </div>
-        <div className="black-overlay-favs">
-            <h1 className="dash-title-favs">My Favorite Game!</h1>
-            <h3 className="fav-game-title">{favoriteGameTitle}</h3>
-        </div>
-        <div className="black-overlay2">
-            <ul className="dash-review-list">
-              <h1 className="dash-review-list-title">My Reviews!</h1>
-              {userReviews.map((review) => (
-                <li key={review.id} className="review-ids">
-                  <strong className="dash-review-number">Review ID: {review.id}</strong> {review.content} <strong className="dash-review-ratings">Rating:</strong> {review.rating}
-                  <Button className="review-edit-button" onClick={() => setSelectedReviewId(review.id)}>Edit</Button>
-                  <Button className="review-delete-button" onClick={() => handleDeleteReview(review.id)}>Delete</Button>
-                </li>
-              ))}
-            </ul>
-        </div>
-        <div className="dash-review-form">
+      <VideoBackground />
+      <div className="black-overlay-dash">
+        <h1 className="dash-title">Welcome, {user.username}!</h1>
+        <h1 className="dash-header">Thank you for joining the community!</h1>
+        {isLoggedIn && <Button className="dash-logout-button" onClick={logout}>Logout</Button>}
+      </div>
+      <div className="black-overlay-favs">
+        <h1 className="dash-title-favs">My Favorite Game!</h1>
+        <h3 className="fav-game-title">{favoriteGameTitle}</h3>
+      </div>
+      <div className="black-overlay2">
+        <ul className="dash-review-list">
+          <h1 className="dash-review-list-title">My Reviews!</h1>
+          {userReviews.map((review) => (
+            <li key={review.id} className="review-ids">
+              <strong className="dash-review-number">Review ID: {review.id}</strong> {review.content} <strong className="dash-review-ratings">Rating:</strong> {review.rating}
+              <Button className="review-edit-button" onClick={() => setSelectedReviewId(review.id)}>Edit</Button>
+              <Button className="review-delete-button" onClick={() => handleDeleteReview(review.id)}>Delete</Button>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="dash-review-form">
         {selectedReviewId !== null && (
-              <ReviewForm
-                gameId={gameId}
-                onReviewSubmit={handleReviewSubmit}
-                user={user}
-                reviewId={selectedReviewId}
-                initialReview={userReviews.find((review) => review.id === selectedReviewId)}
-              />
-            )}
-        </div>
+          <ReviewForm
+            gameId={gameId}
+            onReviewSubmit={handleReviewSubmit}
+            user={user}
+            reviewId={selectedReviewId}
+            initialReview={userReviews.find((review) => review.id === selectedReviewId)}
+          />
+        )}
+      </div>
     </div>
   );
-}
+};
 
 export default Dashboard;

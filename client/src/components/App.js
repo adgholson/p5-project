@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -8,16 +8,10 @@ import Dashboard from "./Dashboard";
 import HomePage from "./HomePage";
 import CommunityPage from "./CommunityPage";
 import GameDetailsPage from "./GameDetailsPage";
+import { UserProvider } from './UserContext';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
   const [games, setGames] = useState([]);
-
-  const handleLogin = (user) => {
-    setIsLoggedIn(true);
-    setUser(user);
-  };
 
   useEffect(() => {
     fetch(`/games`)
@@ -26,20 +20,23 @@ function App() {
       .catch((error) => console.error("Error fetching games:", error));
   }, []);
 
+
   return (
     <Router>
-      <div className="App">
-        <Navbar isLoggedIn={isLoggedIn} />
-        <Switch>
-          <Route path="/" exact component={HomePage} />
-          <Route path="/login" render={(props) => <LoginPage {...props} onLogin={handleLogin} />} />
-          <Route path="/signup" component={SignUpPage} />
-          <Route path="/dashboard" render={(props) => <Dashboard {...props} user={user} setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} />
-          <Route path="/community" exact render={() => <CommunityPage games={games} user={user} />} />
-          <Route path="/gamedetails/:gameId" render={(props) => <GameDetailsPage {...props} games={games} user={user} />} />
-        </Switch>
-        <Footer />
-      </div>
+      <UserProvider>
+        <div className="App">
+          <Navbar />
+          <Switch>
+            <Route path="/" exact component={HomePage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/signup" component={SignUpPage} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/community" render={() => <CommunityPage games={games} />} />
+            <Route path="/gamedetails/:gameId" component={GameDetailsPage} />
+          </Switch>
+          <Footer />
+        </div>
+      </UserProvider>
     </Router>
   );
 }

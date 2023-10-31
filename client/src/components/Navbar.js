@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './Navbar.css';
 import { Button } from "react-bootstrap";
+import { useUser } from "./UserContext";
 
-const Navbar = ({ isLoggedIn }) => {
+const Navbar = () => {
+    const {isLoggedIn} = useUser();
     return (
         <nav className="navbar">
             <div className="navbar-left">
