@@ -1,0 +1,30 @@
+.noti-div{
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.noti-count{
+    margin-left: 10px;
+    font-size: 25px;
+}
+
+.noti-button{
+    margin-right: 10px;
+    font-size: 15px;
+    background-color: #D46531;
+    margin-right: 10px;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: 'Bangers', sans-serif;
+    transition: all 0.3s ease;
+    z-index: 3;
+}
+
+.noti-button:hover{
+    background-color: white;
+    color: black; 
+}

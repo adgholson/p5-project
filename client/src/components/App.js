@@ -30,7 +30,7 @@ function App() {
             <Route path="/" exact component={HomePage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/signup" component={SignUpPage} />
-            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/dashboard" render={(props) => <Dashboard {...props} games={games} />} />
             <Route path="/community" render={() => <CommunityPage games={games} />} />
             <Route path="/gamedetails/:gameId" component={GameDetailsPage} />
           </Switch>

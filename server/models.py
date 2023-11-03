@@ -36,8 +36,8 @@ class User(db.Model, SerializerMixin):
         return bcrypt.check_password_hash(self._password_hash, password)
 
     # Relationships
-    reviews = db.relationship('Review', backref='user_reviews', lazy=True, overlaps="user")
-    favorite_games = db.relationship('FavoriteGame', backref='user_favorite_games', lazy=True, overlaps="user")
+    reviews = db.relationship('Review', backref='user', lazy=True)
+    favorite_games = db.relationship('FavoriteGame', backref='user', lazy=True)
     favorite_games_proxy = association_proxy('user_favorite_games', 'game')
     reviews_proxy = association_proxy('user_reviews', 'game')
 
@@ -72,12 +72,11 @@ class Review(db.Model, SerializerMixin):
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=False)
 
     # Relationships
-    user = db.relationship('User', backref='user_reviews', lazy=True, overlaps="reviews")
-    game = db.relationship('Game', backref='game_reviews', lazy=True, overlaps="reviews")
-    user_proxy = association_proxy('user', 'username')
+
+    #user_proxy = association_proxy('user', 'username')
 
     # Serialization Rules
-    serialize_rules = ('-user.reviews', '-game.reviews',)
+    serialize_rules = ('-user', '-game')
 
     # Validations
     @validates('content')
@@ -121,9 +120,9 @@ class FavoriteGame(db.Model, SerializerMixin):
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=False)
 
     # Relationships
-    user = db.relationship('User', backref='user_favorite_games', lazy=True, overlaps="favorite_games")
-    game = db.relationship('Game', backref='favorite_games', lazy=True, overlaps="favorite_games")
-    game_proxy = association_proxy('game', 'title')
+    #user = db.relationship('User', backref='user_favorite_games', lazy=True, overlaps="favorite_games")
+    #game = db.relationship('Game', backref='favorite_games', lazy=True, overlaps="favorite_games")
+    #game_proxy = association_proxy('game', 'title')
 
     # Serialization rules
     serialize_rules = ('-user.favorite_games', '-game.favorites',)
@@ -157,8 +156,8 @@ class Game(db.Model, SerializerMixin):
     platforms = db.Column(db.String, nullable=False)
 
     # Relationships
-    reviews = db.relationship('Review', backref='game_reviews', lazy=True, overlaps="game")
-    favorites = db.relationship('FavoriteGame', backref='game_favorites', lazy=True, overlaps="game")
+    reviews = db.relationship('Review', backref='game', lazy=True, overlaps="game")
+    favorites = db.relationship('FavoriteGame', backref='game', lazy=True, overlaps="game")
     favorite_users_proxy = association_proxy('game_favorites', 'user')
     review_users_proxy = association_proxy('game_reviews', 'user')
 
