@@ -1,5 +1,5 @@
 .dash-container{
-    height: 210vh;
+    height: 220vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,7 +20,7 @@
     color: white;
     font-family: 'Quicksand', sans-serif;
     text-align: center;
-    margin-bottom: 72%;
+    margin-bottom: 75%;
     z-index: 2;
 }
 
@@ -63,7 +63,7 @@
     color: white;
     font-family: 'Quicksand', sans-serif;
     text-align: center;
-    margin-bottom: 30%;
+    margin-bottom: 33%;
     z-index: 2;
     align-items: center;
     justify-content: center;
@@ -111,12 +111,20 @@
     margin-left: 5rem;
     margin-right: 5rem;
     z-index: 99;
+    overflow-y: auto;
 }
 
 .dash-review-list-title{
     font-family: 'Bangers', sans-serif;
     font-size: 60px;
     text-align: center;
+}
+
+.dash-review-list-title-none{
+    font-family: 'Bangers', sans-serif;
+    font-size: 60px;
+    text-align: center;
+    margin-top: 50%;
 }
 
 .dash-review-number{
@@ -169,7 +177,7 @@
 }
 
 .dash-review-form{
-    margin-top: 58%;
+    margin-top: 65%;
     width: 100%;
     margin-left: 27%;
     height: 100%;

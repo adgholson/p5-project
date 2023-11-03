@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import VideoBackground from "./VideoBackground";
 import Notification from "./Notification";
 import ReviewForm from "./ReviewForm";
 import './Dashboard.css';
 import { useUser } from "./UserContext";
+import LoadingPage from "./LoadingPage";
 
-const Dashboard = ({ games }) => {
+const Dashboard = () => {
   const { user, logout, isLoggedIn } = useUser();
   const [userReviews, setUserReviews] = useState([]);
   const [selectedReview, setSelectedReview] = useState(null);
@@ -30,7 +30,7 @@ const Dashboard = ({ games }) => {
         .then((data) => setUserReviews(data.reviews))
         .catch((error) => console.error("Error fetching user reviews:", error));
     }
-  }, [user]);
+  }, [userReviews, user]);
 
   const handleDeleteReview = (reviewId) => {
     fetch(`/reviews/${reviewId}`, {
@@ -58,17 +58,28 @@ const Dashboard = ({ games }) => {
           rating: reviewData.rating,
         }),
       })
-      .then((response) => response.json())
-      .then((updatedReview) => {
-        setUserReviews((prevReviews) => prevReviews.map((review) => (review.id === updatedReview.id ? updatedReview : review)));
-        setSelectedReview(null);
-      })
-      .catch((error) => console.error("Error updating review:", error));
+        .then((response) => response.json())
+        .then((updatedReview) => {
+          setUserReviews((prevReviews) =>
+            prevReviews.map((review) =>
+              review.id === updatedReview.id ? updatedReview : review
+            )
+          );
+          setSelectedReview(null);
+  
+          fetch(`/reviews/user/${user.id}`)
+            .then((response) => response.json())
+            .then((data) => setUserReviews(data.reviews))
+            .catch((error) =>
+              console.error("Error fetching updated user reviews:", error)
+            );
+        })
+        .catch((error) => console.error("Error updating review:", error));
     }
   };
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <LoadingPage/>;
   }
 
   return (
@@ -85,6 +96,7 @@ const Dashboard = ({ games }) => {
         <Notification favoriteGameId={favoriteGame?.id} title={favoriteGame?.title}/>
       </div>
       <div className="black-overlay2">
+      {userReviews && userReviews.length > 0 ? (
         <ul className="dash-review-list">
           <h1 className="dash-review-list-title">My Reviews!</h1>
           {userReviews.map((review) => (
@@ -95,6 +107,9 @@ const Dashboard = ({ games }) => {
             </li>
           ))}
         </ul>
+      ) : (
+        <h1 className="dash-review-list-title-none">No Reviews Yet!</h1>
+      )}
       </div>
       <div className="dash-review-form">
         {selectedReview !== null && (
@@ -102,6 +117,7 @@ const Dashboard = ({ games }) => {
             onReviewSubmit={handleReviewSubmit}
             user={user}
             initialReview={selectedReview}
+            onHideForm={() => setSelectedReview(null)}
           />
         )}
       </div>

@@ -31,7 +31,7 @@ function Notification({favoriteGameId, title}) {
 
   return (
     <div className="noti-div">
-      <h2 className="noti-count">Interactions with reviews of {title}: {notificationCount}</h2>
+      <h2 className="noti-count">Updates in {title}: {notificationCount}</h2>
       <Button className="noti-button" onClick={clearNotifications}>Clear Notifications</Button>
     </div>
   );

@@ -4,10 +4,15 @@ import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import GameDetailsPage from "./GameDetailsPage";
 import VideoBackground from "./VideoBackground";
 import "./CommunityPage.css";
+import LoadingPage from "./LoadingPage";
 
 function CommunityPage( {games} ) {
   const match = useRouteMatch("/gamedetails/:gameId");
   const specificGameId = match ? match.params.gameId : null;
+
+  if (!games || games.length === 0) {
+    return <LoadingPage/>
+  }
 
   return (
     <div className="community-page">
