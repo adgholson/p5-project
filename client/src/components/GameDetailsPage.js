@@ -5,6 +5,7 @@ import { Card, Button } from "react-bootstrap";
 import "./GameDetailsPage.css";
 import ReviewForm from "./ReviewForm";
 import { useUser } from "./UserContext";
+import LoadingPage from "./LoadingPage";
 
 const GameDetailsPage = () => {
   const { gameId } = useParams();
@@ -76,7 +77,7 @@ const GameDetailsPage = () => {
   };
 
   if (!game) {
-    return <div>Loading...</div>;
+    return <LoadingPage/>;
   }
 
   return (

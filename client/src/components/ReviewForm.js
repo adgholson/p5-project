@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import "./ReviewForm.css";
 
-const ReviewForm = ({ onReviewSubmit, user, initialReview, gameId }) => {
+const ReviewForm = ({ onReviewSubmit, user, initialReview, gameId, onHideForm }) => {
   const [content, setContent] = useState(initialReview ? initialReview.content : "");
   const [rating, setRating] = useState(initialReview ? initialReview.rating : "");
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,6 +31,7 @@ const ReviewForm = ({ onReviewSubmit, user, initialReview, gameId }) => {
     if (initialReview) {
       reviewData.reviewId = initialReview.id;
       handleUpdateReview(reviewData);
+      onHideForm();
     } else {
       handleCreateReview(reviewData);
     }
@@ -45,8 +46,8 @@ const ReviewForm = ({ onReviewSubmit, user, initialReview, gameId }) => {
       body: JSON.stringify(reviewData),
     })
       .then((response) => response.json())
-      .then((data) => {
-        onReviewSubmit(data);
+      .then((createdReview) => {
+        onReviewSubmit({ ...createdReview, username: user.username });
         setContent("");
         setRating("");
       })
@@ -54,7 +55,7 @@ const ReviewForm = ({ onReviewSubmit, user, initialReview, gameId }) => {
         if (error.message === 'Validation Error') {
           setErrorMessage("Review content must be at least 30 characters long.");
         } else {
-          setErrorMessage("Review content must be at least 30 characters long.");
+          setErrorMessage("Error creating review.");
         }
       });
   };
@@ -75,7 +76,6 @@ const ReviewForm = ({ onReviewSubmit, user, initialReview, gameId }) => {
         onReviewSubmit(updatedReview);
         setContent("");
         setRating("");
-        window.location.reload();
       })
       .catch((error) => {
         if (error.message === 'Validation Error') {

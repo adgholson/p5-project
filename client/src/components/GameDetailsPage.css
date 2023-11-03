@@ -75,6 +75,7 @@
 .reviews-list{
   margin-left: 6rem;
   margin-right: 6rem;
+  overflow-y: auto;
 }
 
 .overlay-favs {

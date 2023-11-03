@@ -62,10 +62,6 @@ def stream(game_id):
             
     return Response(generate(), mimetype='text/event-stream')
 
-
-
-
-
 class Users(Resource):
     def get(self):
         users = User.query.all()

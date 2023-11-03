@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import ScrollToTop from "./ScrollToTop";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SignUpPage from "./SignUpPage";
@@ -23,6 +24,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <UserProvider>
         <div className="App">
           <Navbar />
