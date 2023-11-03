@@ -3,14 +3,17 @@
 # Standard library imports
 
 # Remote library imports
-from flask import session, make_response, request
+from flask import session, make_response, request, Response
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime
+import time
+import json
 
 # Local imports
 from config import app, db, api, CORS
 # Add your model imports
-from models import *
+from models import Game, Review, FavoriteGame, User
 
 # Views go here!
 CORS(app)
@@ -20,7 +23,8 @@ def check_if_logged_in():
     open_access_list = [
         'signup',
         'login',
-        'check_session'
+        'check_session',
+        'stream'
     ]
     if (request.endpoint) not in open_access_list and (not session.get('user_id')):
         return {'error': '401 Unauthorized'}, 401
@@ -43,10 +47,24 @@ def get_game_reviews(game_id):
     else:
         return jsonify({"error": "Game not found"}), 404
 
+@app.route('/stream/<game_id>/reviews')
+def stream(game_id):
+    favorite_game = db.session.get(Game, game_id)
+    def generate():
+        last_seen_id = Reviews.created_review_id
+        with app.app_context():
+            while True:
+                if Reviews.created_review_id and Reviews.created_review_id is not last_seen_id:
+                    last_seen_id = Reviews.created_review_id
+                    review = db.session.get(Review, last_seen_id)
+                    if review.game_id is favorite_game.id:
+                        yield f"data:"+json.dumps(review.to_dict())+"\n\n"
+            
+    return Response(generate(), mimetype='text/event-stream')
 
-games = []
-users = []
-reviews = []
+
+
+
 
 class Users(Resource):
     def get(self):
@@ -189,6 +207,7 @@ class ReviewsByUserId(Resource):
         return make_response({"reviews": review_list}, 200)
 
 class Reviews(Resource):
+    created_review_id = None
     def get(self):
         reviews = Review.query.all()
         review_list = []
@@ -209,21 +228,20 @@ class Reviews(Resource):
         rating = data.get("rating")
         user_id = data.get("user_id")
         game_id = data.get("game_id")
-
         if not content or not rating or not user_id or not game_id:
             return make_response({"error": "Missing required fields"}, 400)
 
         user = User.query.get(user_id)
         game = Game.query.get(game_id)
-
+        
         if not user or not game:
             return make_response({"error": "Invalid user_id or game_id"}, 404)
 
         new_review = Review(content=content, rating=rating, user=user, game=game)
         db.session.add(new_review)
         db.session.commit()
-
-        return make_response({"message": "Review added successfully"}, 201)
+        Reviews.created_review_id = new_review.id
+        return make_response(new_review.to_dict(), 201)
 
 class ReviewById(Resource):
     def delete(self, review_id):

@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import VideoBackground from "./VideoBackground";
+import Notification from "./Notification";
 import ReviewForm from "./ReviewForm";
 import './Dashboard.css';
 import { useUser } from "./UserContext";
 
-const Dashboard = () => {
-  const { gameId } = useParams();
+const Dashboard = ({ games }) => {
   const { user, logout, isLoggedIn } = useUser();
   const [userReviews, setUserReviews] = useState([]);
-  const [selectedReviewId, setSelectedReviewId] = useState(null);
-  const [favoriteGameTitle, setFavoriteGameTitle] = useState("");
+  const [selectedReview, setSelectedReview] = useState(null);
+  const [favoriteGame, setFavoriteGame] = useState();
 
   useEffect(() => {
     if (user) {
@@ -20,7 +20,7 @@ const Dashboard = () => {
         .then((data) => {
           const favoriteGame = data.favorite_games[0];
           if (favoriteGame) {
-            setFavoriteGameTitle(favoriteGame.title);
+            setFavoriteGame(favoriteGame);
           }
         })
         .catch((error) => console.error("Error fetching favorite game:", error));
@@ -61,7 +61,7 @@ const Dashboard = () => {
       .then((response) => response.json())
       .then((updatedReview) => {
         setUserReviews((prevReviews) => prevReviews.map((review) => (review.id === updatedReview.id ? updatedReview : review)));
-        setSelectedReviewId(null);
+        setSelectedReview(null);
       })
       .catch((error) => console.error("Error updating review:", error));
     }
@@ -81,7 +81,8 @@ const Dashboard = () => {
       </div>
       <div className="black-overlay-favs">
         <h1 className="dash-title-favs">My Favorite Game!</h1>
-        <h3 className="fav-game-title">{favoriteGameTitle}</h3>
+        <h3 className="fav-game-title">{favoriteGame?.title}</h3>
+        <Notification favoriteGameId={favoriteGame?.id} title={favoriteGame?.title}/>
       </div>
       <div className="black-overlay2">
         <ul className="dash-review-list">
@@ -89,20 +90,18 @@ const Dashboard = () => {
           {userReviews.map((review) => (
             <li key={review.id} className="review-ids">
               <strong className="dash-review-number">Review ID: {review.id}</strong> {review.content} <strong className="dash-review-ratings">Rating:</strong> {review.rating}
-              <Button className="review-edit-button" onClick={() => setSelectedReviewId(review.id)}>Edit</Button>
+              <Button className="review-edit-button" onClick={() => setSelectedReview(review)}>Edit</Button>
               <Button className="review-delete-button" onClick={() => handleDeleteReview(review.id)}>Delete</Button>
             </li>
           ))}
         </ul>
       </div>
       <div className="dash-review-form">
-        {selectedReviewId !== null && (
+        {selectedReview !== null && (
           <ReviewForm
-            gameId={gameId}
             onReviewSubmit={handleReviewSubmit}
             user={user}
-            reviewId={selectedReviewId}
-            initialReview={userReviews.find((review) => review.id === selectedReviewId)}
+            initialReview={selectedReview}
           />
         )}
       </div>

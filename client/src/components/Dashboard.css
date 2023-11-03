@@ -54,7 +54,7 @@
     height: 100%;
     position: absolute;
     max-width: 1000px;
-    max-height: 250px;
+    max-height: 270px;
     padding: 20px;
     border: 1px solid white;
     border-radius: 8px;
@@ -63,14 +63,16 @@
     color: white;
     font-family: 'Quicksand', sans-serif;
     text-align: center;
-    margin-bottom: 32%;
+    margin-bottom: 30%;
     z-index: 2;
+    align-items: center;
+    justify-content: center;
 }
 
 .dash-title-favs{
     font-family: 'Bangers', sans-serif;
     font-size: 70px;
-    padding-top: 15px;
+    padding-top: 0px;
 }
 
 .fav-game-title{
@@ -105,7 +107,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    margin-top: 47%;
+    margin-top: 50%;
     margin-left: 5rem;
     margin-right: 5rem;
     z-index: 99;

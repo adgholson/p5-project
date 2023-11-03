@@ -30,8 +30,8 @@ export const UserProvider = ({ children }) => {
       try {
         const userData = JSON.parse(savedUser);
   
-        if (userData && userData.user) {
-          setUser(userData.user);
+        if (userData && userData.id) {
+          setUser(userData);
           setIsLoggedIn(true);
         } else {
           console.error('Invalid user data structure in localStorage:', userData);

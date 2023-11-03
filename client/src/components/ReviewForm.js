@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import "./ReviewForm.css";
 
-const ReviewForm = ({ gameId, onReviewSubmit, user, initialReview }) => {
+const ReviewForm = ({ onReviewSubmit, user, initialReview, gameId }) => {
   const [content, setContent] = useState(initialReview ? initialReview.content : "");
   const [rating, setRating] = useState(initialReview ? initialReview.rating : "");
   const [errorMessage, setErrorMessage] = useState("");
@@ -18,7 +18,7 @@ const ReviewForm = ({ gameId, onReviewSubmit, user, initialReview }) => {
       return;
     }
 
-    const integerGameId = parseInt(gameId, 10);
+    const integerGameId = parseInt(gameId || initialReview?.game_id, 10);
     const integerUserId = parseInt(user.id, 10);
 
     const reviewData = {
@@ -49,7 +49,6 @@ const ReviewForm = ({ gameId, onReviewSubmit, user, initialReview }) => {
         onReviewSubmit(data);
         setContent("");
         setRating("");
-        window.location.reload();
       })
       .catch((error) => {
         if (error.message === 'Validation Error') {
