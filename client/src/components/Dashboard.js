@@ -93,6 +93,9 @@ const Dashboard = () => {
       <div className="black-overlay-favs">
         <h1 className="dash-title-favs">My Favorite Game!</h1>
         <h3 className="fav-game-title">{favoriteGame?.title}</h3>
+      </div>
+      <div className="black-overlay-noti">
+        <h1 className="dash-title-noti">Notifications!</h1>
         <Notification favoriteGameId={favoriteGame?.id} title={favoriteGame?.title}/>
       </div>
       <div className="black-overlay2">

@@ -1,17 +1,16 @@
 .noti-div{
     align-items: center;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 40px;
+    text-align: center;
+    display: grid;
 }
 
-.noti-count{
-    margin-left: 10px;
+.noti-header{
     font-size: 25px;
 }
 
 .noti-button{
-    margin-right: 10px;
+    margin-top: 15px;
+    margin-left: 10px;
     font-size: 15px;
     background-color: #D46531;
     margin-right: 10px;
@@ -27,4 +26,15 @@
 .noti-button:hover{
     background-color: white;
     color: black; 
+}
+
+.noti-list{
+    height: 100%;
+    max-height: 370px;
+    color: #D46531;
+    overflow-y: auto;
+}
+
+.noti-count-h3{
+    color: #D46531;
 }
