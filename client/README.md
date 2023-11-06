@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+# The LegendDairy App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The LegendDairy App is a web application that allows users to explore and review the Sly Cooper videogame series. Users can create accounts, log in, browse the games, view detailed game information, write and read reviews, and add a game as their favorite. The app provides a seamless user experience, making it easy for fans to share their thoughts about the Sly Cooper games.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### User Authentication and Management
+-Signup: Users can create an account by providing a unique username, email address, and password. Passwords are securely hashed before storage in the database.
+-Login: Registered users can log in using their username and password, granting them access to personalized features.
+-User Profiles: Each user has a profile page displaying their information.
+-Session Management: User sessions are managed securely to ensure a smooth and secure user experience.
 
-### `npm start`
+### Game Information
+-Game Listing: Users can view a list of games, each displaying the game's title and cover image.
+-Game Details: Clicking on a game reveals more detailed information, including a comprehensive description and supported gaming platforms.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Reviews and Ratings
+-Review Creation: Users can write reviews for each game, providing their thoughts and opinions about the gameplay, graphics, and overall experience.
+-Rating System: Reviews include a rating from 1 to 10, allowing users to score games based on their preferences.
+-Review Management: Users can edit or delete their reviews to update their feedback.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Favorite Games
+-Favorites: Users can add game as their favorite, making it easy to keep track of their preferred title.
+-Favorite Game Display: Users can view their favorite game.
 
-### `npm test`
+### Real-Time Notifications
+Real-Time Notifications: Users receive real-time updates about new reviews for their favorite game, enhancing their engagement with the community.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technologies Used
 
-### `npm run build`
+-Frontend: The frontend of the app is built using HTML, CSS, JavaScript, and React.js. It provides an intuitive and responsive user interface for users to interact with the application.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+-Backend: The backend is developed with Python and Flask, utilizing Flask-RESTful for creating APIs, Flask-SQLAlchemy for database interactions, and Flask-Bcrypt for secure password hashing.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+-Database: The app uses an SQLite database to store user data, game information, reviews, and favorite games.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+-Real-Time Notifications: Real-time updates are implemented using EventSource to stream new review data to the frontend as soon as it becomes available.
 
-### `npm run eject`
+## Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To run the Game Review App locally, follow these steps:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Clone the Repository:
+    git clone [https://github.com/adgholson/p5-project.git]
+2. Install Dependencies:
+    pip install -r requirements.txt
+3. Run the Backend:
+    python app.py
+4. Set Up the Frontend:
+    Navigate to the frontend directory.
+    Run npm install
+    Run npm start
+5. Access the App:
+    Open your web browser and visit http://localhost:3000 to access the app.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Contributing
+This app was made my GitHub user **adgholson**! Contributions are welcome! Feel free to open issues or submit pull requests to improve the application or fix any bugs.
