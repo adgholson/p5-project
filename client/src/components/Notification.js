@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import './Notification.css';
+import { Link } from "react-router-dom";
 
 function Notification({ favoriteGameId, title }) {
   const [notificationCount, setNotificationCount] = useState(0);
@@ -36,7 +37,7 @@ function Notification({ favoriteGameId, title }) {
       <h2 className="noti-header">Updates in {title}: <h3 className="noti-count-h3">{notificationCount}</h3></h2>
       <div className="noti-list">
         {notificationMessages.map((message, index) => (
-          <div key={index} className="noti-message">{message}</div>
+          <Link to={`/gamedetails/${favoriteGameId}`} className="notilink"><div key={index} className="noti-message">{message}</div></Link>
         ))}
       </div>
       <Button className="noti-button" onClick={clearNotifications}>Clear Notifications</Button>

@@ -11,7 +11,7 @@ const Navbar = () => {
         <nav className="navbar">
             <div className="navbar-left">
                 <img className="navbar-logo" src="..\LDLogoBang_NoWhite.png" alt="Logo" />
-                <span className="navbar-title">LegendDairy</span>
+                <span className="navbar-title"></span>
             </div>
             <div className="navbar-right">
                 <ul className="navbar-links">

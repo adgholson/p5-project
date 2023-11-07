@@ -30,11 +30,15 @@
 
 .noti-list{
     height: 100%;
-    max-height: 370px;
+    max-height: 310px;
     color: #D46531;
     overflow-y: auto;
 }
 
 .noti-count-h3{
+    color: #D46531;
+}
+
+.notilink{
     color: #D46531;
 }
