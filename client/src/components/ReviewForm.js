@@ -50,12 +50,13 @@ const ReviewForm = ({ onReviewSubmit, user, initialReview, gameId, onHideForm })
         onReviewSubmit({ ...createdReview, username: user.username });
         setContent("");
         setRating("");
+        setErrorMessage("")
       })
       .catch((error) => {
         if (error.message === 'Validation Error') {
           setErrorMessage("Review content must be at least 30 characters long.");
         } else {
-          setErrorMessage("Error creating review.");
+          setErrorMessage("Review content must be at least 30 characters long.");
         }
       });
   };
